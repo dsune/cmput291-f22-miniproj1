@@ -2,9 +2,11 @@ import sqlite3
 from sqlite3 import OperationalError
 import sys
 
-db_name = sys.argv[1]
+#db_name = sys.argv[1]
 
-conn = sqlite3.connect(db_name)
+#conn = sqlite3.connect(db_name)
+conn = sqlite3.connect('proj.db')
+
 c = conn.cursor()
 
 def execFile(filename):
@@ -19,7 +21,8 @@ def execFile(filename):
     lines = execFile.split(';')
 
     for line in lines:
-        c.execute(line)
+            c.execute(line)
+
 
 def loginScreen():
     """
@@ -63,7 +66,6 @@ def searchSP(keywords):
 	
 	:param keywords: user inputted string
 	"""
-    pass
 
 def searchA(keywords):
 	"""
@@ -76,12 +78,9 @@ def searchA(keywords):
 	
 	:param keywords:
 	"""
-    pass
 
 def endSession():
-	"""
-	
-	"""
+
     pass
 
 def addSong():
@@ -89,3 +88,9 @@ def addSong():
 
 def findTop():
     pass
+
+execFile('prj-tables.sql')
+execFile('test-data.sql')
+loginScreen()
+conn.commit()
+conn.close()
