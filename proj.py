@@ -63,8 +63,6 @@ def searchSP(keywords):
 	#If a playlist is selected, display the id, title, and total duration of songs.
 	#Songs are displayed with id, title, and duration. If selected, users can perform a song action.
 	
-	:param keywords: user inputted string
-	"""
 
 	#:param keywords: user inputted string
 	
