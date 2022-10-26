@@ -2,9 +2,11 @@ import sqlite3
 from sqlite3 import OperationalError
 import sys
 
-db_name = sys.argv[1]
+#db_name = sys.argv[1]
 
-conn = sqlite3.connect(db_name)
+#conn = sqlite3.connect(db_name)
+conn = sqlite3.connect('proj.db')
+
 c = conn.cursor()
 
 def execFile(filename):
@@ -19,7 +21,8 @@ def execFile(filename):
     lines = execFile.split(';')
 
     for line in lines:
-        c.execute(line)
+            c.execute(line)
+
 
 def loginScreen():
     """
@@ -60,6 +63,9 @@ def searchSP(keywords):
 	#If a playlist is selected, display the id, title, and total duration of songs.
 	#Songs are displayed with id, title, and duration. If selected, users can perform a song action.
 	
+	:param keywords: user inputted string
+	"""
+
 	#:param keywords: user inputted string
 	
     global connection, cursor
@@ -68,6 +74,7 @@ def searchSP(keywords):
     # x is a list. traverse x then match the word and place it into a SP list if the same tuple is not in SP.
     #Display function to display top five
     # if displayed display everything is selected display all in SP list.
+
 
 
 
@@ -82,12 +89,9 @@ def searchA(keywords):
 	
 	:param keywords:
 	"""
-    pass
 
 def endSession():
-	"""
-	
-	"""
+
     pass
 
 def addSong():
@@ -95,3 +99,9 @@ def addSong():
 
 def findTop():
     pass
+
+execFile('prj-tables.sql')
+execFile('test-data.sql')
+loginScreen()
+conn.commit()
+conn.close()
