@@ -63,7 +63,10 @@ def searchSP(keywords):
 	
 	:param keywords: user inputted string
 	"""
-    pass
+    global connection, cursor
+
+    
+
 
 def searchA(keywords):
 	"""
