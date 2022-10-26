@@ -54,18 +54,21 @@ def startSession(userID):
     pass
 
 def searchSP(keywords):
-	"""
-	Searches for songs and playlists that match one or more keywords provided by the user.
-	Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
-	At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
-	If a playlist is selected, display the id, title, and total duration of songs.
-	Songs are displayed with id, title, and duration. If selected, users can perform a song action.
+	#Searches for songs and playlists that match one or more keywords provided by the user.
+	#Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
+	#At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
+	#If a playlist is selected, display the id, title, and total duration of songs.
+	#Songs are displayed with id, title, and duration. If selected, users can perform a song action.
 	
-	:param keywords: user inputted string
-	"""
+	#:param keywords: user inputted string
+	
     global connection, cursor
 
-    
+    x= keywords.split(" ")
+    # x is a list. traverse x then match the word and place it into a SP list if the same tuple is not in SP.
+    #Display function to display top five
+    # if displayed display everything is selected display all in SP list.
+
 
 
 def searchA(keywords):
