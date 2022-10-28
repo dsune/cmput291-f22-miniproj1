@@ -5,6 +5,7 @@
 PRAGMA foreign_keys = ON;
 
 --- Users ---
+-- u1 appears in both users and artists
 insert into users values ('u1', 'Dan', 'pw123');
 insert into users values ('u2', 'Penny', 'pw234');
 insert into users values ('u3', 'Yeno', 'pw345');
@@ -428,6 +429,8 @@ insert into plinclude values (31, 16, 9);
 insert into plinclude values (31, 46, 10);
 
 --- Artists ---
+-- u1 appears in both users and artists
+insert into artists values ('u1', 'Dan', 'Canada', 'pw123');
 insert into artists values ('a1', 'Lady Gaga', 'United States', 'pw');
 insert into artists values ('a2', 'OneRepublic', 'United States', 'pw');
 insert into artists values ('a3', 'Imagine Dragons', 'United States', 'pw');
