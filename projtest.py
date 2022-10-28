@@ -43,11 +43,11 @@ def loginScreen(cursor):
 
             # check if user exists
             cursor.execute("SELECT * FROM users WHERE uid= ? COLLATE NOCASE AND pwd= ? ;", (username, password))
-            userResult = c.fetchone()
+            userResult = cursor.fetchone()
 
             # check if artist exists
             cursor.execute("SELECT * FROM artists WHERE aid= ? COLLATE NOCASE AND pwd= ? ;", (username, password))
-            artistResult = c.fetchone()
+            artistResult = cursor.fetchone()
 
             # if login info appears in users AND artists tables
             if userResult is not None and artistResult is not None:
