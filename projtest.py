@@ -21,6 +21,11 @@ def execFile(filename, cursor):
     for line in lines:
         cursor.execute(line)
 
+
+def regAccount():
+    print("Register user function")
+    pass
+
 def loginScreen(cursor):
     """
     Prompts the user to login with their user ID and password.
@@ -39,7 +44,8 @@ def loginScreen(cursor):
 
         if mainChoice == 1:
             username = input("\nUsername: ")
-            password = getpass.getpass("Password: ") # getpass hides text while user is typing
+            # password = getpass.getpass("Password: ") # getpass hides text while user is typing
+            password = input("Password: ")
 
             # check if user exists
             cursor.execute("SELECT * FROM users WHERE uid= ? COLLATE NOCASE AND pwd= ? ;", (username, password))
@@ -57,18 +63,26 @@ def loginScreen(cursor):
                     loginChoice = int(input("1) User\n2) Artist\nChoose how you would like to log in: "))
                 if loginChoice == 1:
                     print("\nLogging in as a user...")
-                    userOptions()
+                    # userOptions()
+                    person = User(username)
+                    return person
                 elif loginChoice == 2:
                     print("\nLogging in as an artist...")
-                    artistOptions()
+                    # artistOptions()
+                    person = Artiste(username)
+                    return person 
                 
             # if login info appears in users OR artists tables
             elif userResult is not None:
                 print("\nHello " + userResult[1] + "!")
-                userOptions()
+                # userOptions()
+                person = User(username)
+                return person
             elif artistResult is not None:
                 print("\nHello " + artistResult[1] + "!")
-                artistOptions()
+                # artistOptions()
+                person = Artiste(username)
+                return person
                 
             # login info does not exist
             else:
@@ -101,7 +115,7 @@ class Artiste(People):
         print("Find top fans/playlists function")
         pass
 
-    def artistOptions(self):
+    def Options(self):
         """
         Presents the menu options for an ARTIST. 
         Calls the appropriate function according to the menu choice.
@@ -187,7 +201,7 @@ class User(People):
         #Display function to display top five
         # if displayed display everything is selected display all in SP list.
     
-    def userOptions(self):
+    def Options(self):
         """
         Presents the menu options for a USER. 
         Calls the appropriate function according to the menu choice.
@@ -226,7 +240,8 @@ def main():
     c = conn.cursor()
     execFile('prj-tables.sql',c)
     execFile('test-data.sql',c)
-    loginScreen(c)
+    person = loginScreen(c)
+    person.Options()
 
     conn.commit()
     conn.close()
