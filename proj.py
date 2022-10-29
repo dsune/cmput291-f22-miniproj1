@@ -38,9 +38,10 @@ def loginScreen():
 
         # initial menu when starting the program
         print("\nMAIN MENU")
-        mainChoice = int(input("1) Log In\n2) Register User \n3) Exit\nWelcome! Please choose an option: "))
+        mainChoice = input("1) Log In\n2) Register User \n3) Exit\nWelcome! Please choose an option: ")
 
-        if mainChoice == 1:
+
+        if mainChoice == "1":
             username = input("\nUsername: ")
             password = getpass.getpass("Password: ") # getpass hides text while user is typing
 
@@ -57,11 +58,11 @@ def loginScreen():
                 print("\nHello " + userResult[1] + "!")
                 while loginChoice not in [1, 2]:
                     print("\nAccount belongs to user and artist")
-                    loginChoice = int(input("1) User\n2) Artist\nChoose how you would like to log in: "))
-                if loginChoice == 1:
+                    loginChoice = input("1) User\n2) Artist\nChoose how you would like to log in: ")
+                if loginChoice == "1" :
                     print("\nLogging in as a user...")
                     userOptions()
-                elif loginChoice == 2:
+                elif loginChoice == "2":
                     print("\nLogging in as an artist...")
                     artistOptions()
             
@@ -76,9 +77,9 @@ def loginScreen():
             # login info does not exist
             else:
                 print("\nAccount does not match our records")
-        elif mainChoice == 2:
+        elif mainChoice == "2":
             regAccount()
-        elif mainChoice == 3:
+        elif mainChoice == "3":
             print("\nShutting down...")
             break
         else:

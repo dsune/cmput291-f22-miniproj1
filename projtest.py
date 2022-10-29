@@ -7,7 +7,7 @@ import getpass
 
 #conn = sqlite3.connect(db_name)
 
-def execFile(filename):
+def execFile(filename, cursor):
     """
     Allows the reading and execution of SQL queries from files that are passed through as arguments
 
@@ -19,7 +19,7 @@ def execFile(filename):
     lines = execFile.split(';')
 
     for line in lines:
-        c.execute(line)
+        cursor.execute(line)
 
 def loginScreen(cursor):
     """
@@ -224,8 +224,8 @@ def main():
     conn = sqlite3.connect('proj.db')
 
     c = conn.cursor()
-    execFile('prj-tables.sql')
-    execFile('test-data.sql')
+    execFile('prj-tables.sql',c)
+    execFile('test-data.sql',c)
     loginScreen(c)
 
     conn.commit()
