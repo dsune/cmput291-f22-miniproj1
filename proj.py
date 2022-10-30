@@ -81,6 +81,7 @@ def loginScreen(cursor, conn):
             cursor.execute("SELECT * FROM users WHERE uid= ? COLLATE NOCASE AND pwd= ? ;", (username, password))
             userResult = cursor.fetchone()
 
+
             # check if artist exists
             cursor.execute("SELECT * FROM artists WHERE aid= ? COLLATE NOCASE AND pwd= ? ;", (username, password))
             artistResult = cursor.fetchone()
@@ -330,3 +331,52 @@ def main():
 
 if __name__ ==  '__main__':
     main()
+main
+
+
+def searchSP(keywords):
+	#Searches for songs and playlists that match one or more keywords provided by the user.
+	#Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
+	#At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
+	#If a playlist is selected, display the id, title, and total duration of songs.
+	#Songs are displayed with id, title, and duration. If selected, users can perform a song action.
+	
+	#:param keywords: user inputted string
+	
+    global connection, cursor
+
+    Search = []
+    
+
+    #x= keywords.split(" ")
+
+    # x is a list. traverse x then match the word and place it into a SP list if the same tuple is not in SP.
+    #Display function to display top five
+    # if displayed display everything is selected display all in SP list.
+
+
+
+def searchA(keywords):
+	"""
+	Searches for artists that match one or more keywords provided by the user.
+	Retrieves artists that have any of the keywords in their name or in the title of a song they have performed.
+	Each match returns the name, nationality, and number of songs performed by that artist.
+	Matches are ordered by number of matching keywords (highest at the top).
+	At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
+	Selecting an artist will return the id, title, and duration of all songs they have performed.
+	
+	:param keywords:
+	"""
+    pass
+
+def endSession():
+	"""
+	
+	"""
+    pass
+
+def addSong():
+    pass
+
+def findTop():
+    pass
