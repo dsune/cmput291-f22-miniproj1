@@ -234,7 +234,7 @@ class User(People):
             print("End of session "  + str(self.session_no))
             self.session_no = None
             self.conn.commit()
-
+#=======================================================================================================================================
     def searchArtiste(self,keywords):
         # Searches for artists that match one or more keywords provided by the user.
         # Retrieves artists that have any of the keywords in their name or in the title of a song they have performed.
@@ -247,7 +247,7 @@ class User(People):
             
         print("Search artists function")
         pass
-
+#=============================================================================================================
     def searchSong(self,keywords):
         #Searches for songs and playlists that match one or more keywords provided by the user.
         #Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
@@ -256,13 +256,19 @@ class User(People):
         #Songs are displayed with id, title, and duration. If selected, users can perform a song action.
             
         #:param keywords: user inputted string
-            
-        global connection, cursor
+        SearchA= []
 
-        x= keywords.split(" ")
-        # x is a list. traverse x then match the word and place it into a SP list if the same tuple is not in SP.
-        #Display function to display top five
-        # if displayed display everything is selected display all in SP list.
+
+        x = keywords.split(" ")
+        for k in x:
+            self.cursor.execute("SELECT * FROM songs WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k + '%',))
+            s = self.cursor.fetchall()
+        
+        
+        for i in s:
+            if i not in SearchA:
+                SearchA.append(i)
+            
 #====================================================================================================================================
     def searchSPlaylist(self,keywords):
         #Searches for songs and playlists that match one or more keywords provided by the user.
@@ -307,7 +313,7 @@ class User(People):
         else:
             self.displayfive(SearchP,"Playlist:")
         
-    #------------------------------------------------------------
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def displayfive(self,spList, type):
     #prints top five songs and playlists
         c = 0
@@ -322,7 +328,7 @@ class User(People):
                 #print(total_duration)
                 print(c, type, spList[c][0], spList[c][1], total_duration)
 
-    #--------------------------------------------------------
+    #------------------------------------------------------------------------------------------------------------------------------------
     def displayall(self,spList, type):
         c = 0
         if type == "Songs:":
