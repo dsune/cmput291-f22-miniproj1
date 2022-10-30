@@ -64,7 +64,11 @@ def searchSP(keywords):
 	
     global connection, cursor
 
-    x= keywords.split(" ")
+    Search = []
+    
+
+    #x= keywords.split(" ")
+
     # x is a list. traverse x then match the word and place it into a SP list if the same tuple is not in SP.
     #Display function to display top five
     # if displayed display everything is selected display all in SP list.
