@@ -263,7 +263,7 @@ class User(People):
         # x is a list. traverse x then match the word and place it into a SP list if the same tuple is not in SP.
         #Display function to display top five
         # if displayed display everything is selected display all in SP list.
-
+#====================================================================================================================================
     def searchSPlaylist(self,keywords):
         #Searches for songs and playlists that match one or more keywords provided by the user.
         #Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
@@ -292,10 +292,49 @@ class User(People):
         for i in p:
             if i not in SearchP:
                 SearchP.append(i)
-        # displays top five
-        #displayfive(SearchS, SearchP)
 
-    
+        # displays top five songs
+        print("\n\t")
+        if len(SearchS) < 5:
+            self.displayall(SearchS, "Songs:")
+        else:
+            self.displayfive(SearchS, "Songs:")
+        
+        #display top five playlists
+        print("\n\t")
+        if len(SearchP) < 5:
+            self.displayall(SearchP, "Playlist:")
+        else:
+            self.displayfive(SearchP,"Playlist:")
+        
+    #------------------------------------------------------------
+    def displayfive(self,spList, type):
+    #prints top five songs and playlists
+        c = 0
+        if type == "Songs:":
+            while c < 5:
+                print(c, type, spList[c][0], spList[c][1],spList[c][1])
+                c = c+1
+        else:
+            while c < 5:
+                self.cursor.execute("SELECT SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.title = ? COLLATE NOCASE AND p.pid = l.pid AND l.sid = s.sid ;", (spList[c][1],))
+                total_duration = self.cursor.fetchone()
+                #print(total_duration)
+                print(c, type, spList[c][0], spList[c][1], total_duration)
+
+    #--------------------------------------------------------
+    def displayall(self,spList, type):
+        c = 0
+        if type == "Songs:":
+            for s in spList:
+                print(c,type, s[0], s[1], s[2])
+                c = c+1
+        else:
+            for p in spList:
+                self.cursor.execute("SELECT SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.title = ? COLLATE NOCASE AND p.pid = l.pid AND l.sid = s.sid ;", (p[1],))
+                total_duration = self.cursor.fetchone()
+                print(c, type, p[0], p[1], total_duration[0])
+#=============================================================================================================================================  
     def Options(self):
         """
         Presents the menu options for a USER. 
@@ -350,42 +389,6 @@ def main():
 if __name__ ==  '__main__':
     main()
 main
-
-
-
-def displayfive(sList, Plist):
-    #prints top five songs and playlists
-    c = 0
-    print("Songs")
-    while c < 5:
-        print(c, sList[c][1])
-        c = c+1
-    
-
-    cnt = 0
-    print("Playlist")
-    while cnt < 5:
-        print(cnt, Plist[cnt][1])
-        c = cnt+1
-#=======================================================
-
-def displayall(sList,Plist):
-    c = 0
-    print("Songs")
-    for s in sList:
-        print(c, s[1])
-        c = c+1
-    
-
-    cnt = 0
-    print("Songs")
-    for p in Plist:
-        print(cnt, p[1])
-        cnt = cnt+1
-#======================================================
-
-
-
 
 
 def addSong():
