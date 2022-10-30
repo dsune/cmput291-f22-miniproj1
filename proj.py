@@ -9,11 +9,7 @@ import getpass
 #db_name = sys.argv[1]
 
 #conn = sqlite3.connect(db_name)
-#==================================================
-# temperorary
 conn = sqlite3.connect('proj.db')
-c = conn.cursor()
-#=================================================
 
 def execFile(filename, cursor):
     """
@@ -277,12 +273,28 @@ class User(People):
                     
         #:param keywords: user inputted string
                     
-        global connection, cursor
+        #global connection, cursor
 
-        x= keywords.split(" ")
-        # x is a list. traverse x then match the word and place it into a SP list if the same tuple is not in SP.
-        #Display function to display top five
-        # if displayed display everything is selected display all in SP list.
+        SearchP = []
+        SearchS= []
+
+
+        x = keywords.split(" ")
+        for k in x:
+            self.cursor.execute("SELECT * FROM songs WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k + '%',))
+            s = self.cursor.fetchall()
+            self.cursor.execute("SELECT * FROM playlists WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k+ '%',))
+            p = self.cursor.fetchall()
+
+        for i in s:
+            if i not in SearchS:
+                SearchS.append(i)
+        for i in p:
+            if i not in SearchP:
+                SearchP.append(i)
+        # displays top five
+        #displayfive(SearchS, SearchP)
+
     
     def Options(self):
         """
@@ -305,7 +317,8 @@ class User(People):
             if menuChoice == "1":
                 self.startSession()
             elif menuChoice == "2":
-                self.searchSPlaylist()
+                keyword = input("Enter: ")
+                self.searchSPlaylist(keyword)
             elif menuChoice == "3":
                 self.searchArtiste()
             elif menuChoice == "4":
@@ -340,38 +353,27 @@ main
 
 
 
-def searchSP(keywords):
-	#Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
-	#At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
-	#If a playlist is selected, display the id, title, and total duration of songs.
-	#Songs are displayed with id, title, and duration. If selected, users can perform a song action.
-		
-    global connection, cursor
-    SearchP = []
-    SearchS= []
-    
-    x = keywords.split(" ")
-    for k in x:
-        c.execute("SELECT * FROM songs WHERE title LIKE %?% COLLATE NOCASE ;", (k,))
-        s = c.fetchall()
-        c.execute("SELECT * FROM playlists WHERE title LIKE %?% COLLATE NOCASE ;", (k,))
-        p = c.fetchall()
-
-        for i in s:
-            if i not in SearchS:
-                SearchS.append(i)
-        for i in p:
-            if i not in SearchP:
-                SearchP.append(i)
-    displayfive(SearchS, SearchP)
-
-    # if displayed display everything is selected display all in SP list.
-
 def displayfive(sList, Plist):
+    #prints top five songs and playlists
     c = 0
     print("Songs")
     while c < 5:
-        print(c, sList[1])
+        print(c, sList[c][1])
+        c = c+1
+    
+
+    cnt = 0
+    print("Playlist")
+    while cnt < 5:
+        print(cnt, Plist[cnt][1])
+        c = cnt+1
+#=======================================================
+
+def displayall(sList,Plist):
+    c = 0
+    print("Songs")
+    for s in sList:
+        print(c, s[1])
         c = c+1
     
 
@@ -380,26 +382,11 @@ def displayfive(sList, Plist):
     for p in Plist:
         print(cnt, p[1])
         cnt = cnt+1
+#======================================================
 
 
-def searchA(keywords):
-	"""
-	Searches for artists that match one or more keywords provided by the user.
-	Retrieves artists that have any of the keywords in their name or in the title of a song they have performed.
-	Each match returns the name, nationality, and number of songs performed by that artist.
-	Matches are ordered by number of matching keywords (highest at the top).
-	At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
-	Selecting an artist will return the id, title, and duration of all songs they have performed.
-	
-	:param keywords:
-	"""
-    pass
 
-def endSession():
-	"""
-	
-	"""
-    pass
+
 
 def addSong():
     pass
