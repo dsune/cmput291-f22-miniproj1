@@ -25,9 +25,36 @@ def execFile(filename, cursor):
         cursor.execute(line)
 
 
-def regAccount():
-    print("Register user function")
-    pass
+def regAccount(cursor, conn):
+    while(True):
+        print("\nCreate an Account")
+        username  = input("\nEnter a username: ").lower()
+        # Checks to see if username exists
+        cursor.execute("""
+                            SELECT uid
+                            FROM users
+                            WHERE lower(uid) = ?
+                             """ , (username,))
+        result = cursor.fetchone()
+        if(result == None):
+            name = input("\nEnter your name: ")
+            password = input("\nEnter password: ")
+            cursor.execute("""
+                                INSERT INTO users VALUES (? ,? ,?)
+                                 """, (username,name,password,))
+            conn.commit()
+            new_user = User(username,cursor,conn)
+            return new_user
+        else:
+            print("\nUsername is already in use. Select one of the options below\n")
+            while(True):    
+                selected_option = input("1) Already have an account \n2) Enter a new username\nSelected Option: ")
+                if(selected_option == "1"):
+                    return None
+                elif(selected_option == "2"):
+                    break
+                else:
+                    print("Select a value between 1 and 2")
 
 def loginScreen(cursor, conn):
     """
@@ -91,7 +118,11 @@ def loginScreen(cursor, conn):
             else:
                 print("\nAccount does not match our records")
         elif mainChoice == "2":
-            regAccount()
+            new_user = regAccount(cursor,conn)
+            if(new_user is not None):
+                return new_user
+            else:
+                continue
         elif mainChoice == "3":
             print("\nShutting down...")
             break
@@ -290,7 +321,8 @@ def main():
     # execFile('prj-tables.sql',c)
     # execFile('test-data.sql',c )
     person = loginScreen(c , conn)
-    person.Options() 
+    if(person is not None):
+        person.Options() 
 
     conn.commit()
     conn.close()
