@@ -25,36 +25,9 @@ def execFile(filename, cursor):
         cursor.execute(line)
 
 
-def regAccount(cursor, conn):
-    while(True):
-        print("\nCreate an Account")
-        username  = input("\nEnter a username: ").lower()
-        # Checks to see if username exists
-        cursor.execute("""
-                            SELECT uid
-                            FROM users
-                            WHERE lower(uid) = ?
-                             """ , (username,))
-        result = cursor.fetchone()
-        if(result == None):
-            name = input("\nEnter your name: ")
-            password = input("\nEnter password: ")
-            cursor.execute("""
-                                INSERT INTO users VALUES (? ,? ,?)
-                                 """, (username,name,password,))
-            conn.commit()
-            new_user = User(username,cursor,conn)
-            return new_user
-        else:
-            print("\nUsername is already in use. Select one of the options below\n")
-            while(True):    
-                selected_option = input("1) Already have an account \n2) Enter a new username\nSelected Option: ")
-                if(selected_option == "1"):
-                    return None
-                elif(selected_option == "2"):
-                    break
-                else:
-                    print("Select a value between 1 and 2")
+def regAccount():
+    print("Register user function")
+    pass
 
 def loginScreen(cursor, conn):
     """
@@ -80,7 +53,6 @@ def loginScreen(cursor, conn):
             # check if user exists
             cursor.execute("SELECT * FROM users WHERE uid= ? COLLATE NOCASE AND pwd= ? ;", (username, password))
             userResult = cursor.fetchone()
-
 
             # check if artist exists
             cursor.execute("SELECT * FROM artists WHERE aid= ? COLLATE NOCASE AND pwd= ? ;", (username, password))
@@ -119,11 +91,7 @@ def loginScreen(cursor, conn):
             else:
                 print("\nAccount does not match our records")
         elif mainChoice == "2":
-            new_user = regAccount(cursor,conn)
-            if(new_user is not None):
-                return new_user
-            else:
-                continue
+            regAccount()
         elif mainChoice == "3":
             print("\nShutting down...")
             break
@@ -138,7 +106,6 @@ class People:
         self.id = id
         self.cursor = cursor
         self.conn = conn
-        self.session_no = None
 
 class Artiste(People):
     def addSong(self):
@@ -167,17 +134,17 @@ class Artiste(People):
             print("2) Find your top fans and playlists")
             print("3) Log Out")
 
-            menuChoice = input("Choose an option: ")
+            menuChoice = int(input("Choose an option: "))
 
-            if menuChoice == "1":
+            if (menuChoice not in range(1, 4, 1)):
+                print("Invalid option, please input a number between x and x")
+            elif menuChoice == 1:
                 self.addSong()
-            elif menuChoice == "2":
+            elif menuChoice == 2:
                 self.findTopFan()
-            elif menuChoice == "3":
+            elif menuChoice == 3:
                 print("\nLogging out artist...")
                 break
-            else:
-                print("Invalid option, please input a number between x and x")
 
 class User(People):
     def startSession(self):
@@ -188,51 +155,35 @@ class User(People):
         :param userID: the ID of the user currently logged in
         """
 
-        if(self.session_no is not None):
-            print("You cant start a new session")
+        # Gets the session  with the highest number
+        current_day = date.today()
+
+        d1 = current_day.strftime("%Y-%m-%d")
+
+        self.cursor.execute("SELECT COUNT(sno) FROM sessions;")
+        number_of_sessions = self.cursor.fetchone()
+
+        # Create a new session
+        if(number_of_sessions[0] == 0):
+            # Checks whether there are any created sessions
+            new_session = (self.id,number_of_sessions[0] + 1,d1,)
+            print("Start session function")
+            print(number_of_sessions[0] + 1) 
         else:
-            # Gets the session  with the highest number
-            current_day = date.today()
-
-            d1 = current_day.strftime("%Y-%m-%d")
-
-            self.cursor.execute("SELECT COUNT(sno) FROM sessions;")
-            number_of_sessions = self.cursor.fetchone()
-
-            # Create a new session
-            if(number_of_sessions[0] == 0):
-                # Checks whether there are any created sessions
-                self.session_no = number_of_sessions[0] + 1
-                new_session = (self.id,self.session_no,d1,)
-                print("Starting session " + str(self.session_no))
-            else:
-                # Checks for the maximum session number and adds one to it
-                self.cursor.execute("SELECT MAX(sno) FROM sessions;")
-                last_added_session = self.cursor.fetchone()
-                self.session_no = last_added_session[0] + 1
-                new_session = (self.id,self.session_no,d1,)
-                print("Starting session " + str(self.session_no))
-                
-            # Insert session into table
-            self.cursor.execute("insert into sessions values (?, ?, ?, NULL);",new_session)
-            self.conn.commit()
+            # Checks for the maximum session number and adds one to it
+            self.cursor.execute("SELECT MAX(sno) FROM sessions;")
+            last_added_session = self.cursor.fetchone()
+            new_session = (self.id,last_added_session[0] + 1,d1,)
+            print("Start session function")
+            print(last_added_session[0] + 1) 
+        
+        # Insert session into table
+        self.cursor.execute("insert into sessions values (?, ?, ?, NULL);",new_session)
+        self.conn.commit()
 
     def endSession(self):
-        # Checks if there is an active session
-        if(self.session_no is None):
-            print("Sorry you cant end the session, no session has been started")
-        else:
-            # Ends sessions if the is an existing sessiomn
-            # Updates the end value of session
-            current_day = date.today()
-
-            d1 = current_day.strftime("%Y-%m-%d")
-            self.cursor.execute("""UPDATE sessions 
-                                    SET end = ?
-                                    WHERE sno = ?  ;""" , (current_day,self.session_no))
-            print("End of session "  + str(self.session_no))
-            self.session_no = None
-            self.conn.commit()
+        print("End session function")
+        pass
 
     def searchArtiste(self,keywords):
         # Searches for artists that match one or more keywords provided by the user.
@@ -295,24 +246,21 @@ class User(People):
             print("4) End your listening session")
             print("5) Log Out")
 
-            menuChoice = input("Choose an option: ")
+            menuChoice = int(input("Choose an option: "))
 
-            if menuChoice == "1":
+            if (menuChoice not in range(1, 8, 1)):
+                print("Invalid option, please input a number between x and x")
+            elif menuChoice == 1:
                 self.startSession()
-            elif menuChoice == "2":
+            elif menuChoice == 2:
                 self.searchSPlaylist()
-            elif menuChoice == "3":
+            elif menuChoice == 3:
                 self.searchArtiste()
-            elif menuChoice == "4":
+            elif menuChoice == 4:
                 self.endSession()
-            elif menuChoice == "5":
-                if(self.session_no is not None):
-                    self.endSession()
+            elif menuChoice == 5:
                 print("\nLogging out user...")
                 break
-            else:
-                print("Invalid option, please input a number between x and x")
-
 
 
 def main():
@@ -322,8 +270,7 @@ def main():
     # execFile('prj-tables.sql',c)
     # execFile('test-data.sql',c )
     person = loginScreen(c , conn)
-    if(person is not None):
-        person.Options() 
+    person.Options() 
 
     conn.commit()
     conn.close()
@@ -331,52 +278,3 @@ def main():
 
 if __name__ ==  '__main__':
     main()
-main
-
-
-def searchSP(keywords):
-	#Searches for songs and playlists that match one or more keywords provided by the user.
-	#Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
-	#At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
-	#If a playlist is selected, display the id, title, and total duration of songs.
-	#Songs are displayed with id, title, and duration. If selected, users can perform a song action.
-	
-	#:param keywords: user inputted string
-	
-    global connection, cursor
-
-    Search = []
-    
-
-    #x= keywords.split(" ")
-
-    # x is a list. traverse x then match the word and place it into a SP list if the same tuple is not in SP.
-    #Display function to display top five
-    # if displayed display everything is selected display all in SP list.
-
-
-
-def searchA(keywords):
-	"""
-	Searches for artists that match one or more keywords provided by the user.
-	Retrieves artists that have any of the keywords in their name or in the title of a song they have performed.
-	Each match returns the name, nationality, and number of songs performed by that artist.
-	Matches are ordered by number of matching keywords (highest at the top).
-	At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
-	Selecting an artist will return the id, title, and duration of all songs they have performed.
-	
-	:param keywords:
-	"""
-    pass
-
-def endSession():
-	"""
-	
-	"""
-    pass
-
-def addSong():
-    pass
-
-def findTop():
-    pass
