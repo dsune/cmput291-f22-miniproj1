@@ -9,6 +9,11 @@ import getpass
 #db_name = sys.argv[1]
 
 #conn = sqlite3.connect(db_name)
+#==================================================
+# temperorary
+conn = sqlite3.connect('proj.db')
+c = conn.cursor()
+#=================================================
 
 def execFile(filename, cursor):
     """
@@ -334,26 +339,47 @@ if __name__ ==  '__main__':
 main
 
 
+
 def searchSP(keywords):
-	#Searches for songs and playlists that match one or more keywords provided by the user.
 	#Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
 	#At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
 	#If a playlist is selected, display the id, title, and total duration of songs.
 	#Songs are displayed with id, title, and duration. If selected, users can perform a song action.
-	
-	#:param keywords: user inputted string
-	
+		
     global connection, cursor
-
-    Search = []
+    SearchP = []
+    SearchS= []
     
+    x = keywords.split(" ")
+    for k in x:
+        c.execute("SELECT * FROM songs WHERE title LIKE %?% COLLATE NOCASE ;", (k,))
+        s = c.fetchall()
+        c.execute("SELECT * FROM playlists WHERE title LIKE %?% COLLATE NOCASE ;", (k,))
+        p = c.fetchall()
 
-    #x= keywords.split(" ")
+        for i in s:
+            if i not in SearchS:
+                SearchS.append(i)
+        for i in p:
+            if i not in SearchP:
+                SearchP.append(i)
+    displayfive(SearchS, SearchP)
 
-    # x is a list. traverse x then match the word and place it into a SP list if the same tuple is not in SP.
-    #Display function to display top five
     # if displayed display everything is selected display all in SP list.
 
+def displayfive(sList, Plist):
+    c = 0
+    print("Songs")
+    while c < 5:
+        print(c, sList[1])
+        c = c+1
+    
+
+    cnt = 0
+    print("Songs")
+    for p in Plist:
+        print(cnt, p[1])
+        cnt = cnt+1
 
 
 def searchA(keywords):
