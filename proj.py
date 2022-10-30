@@ -106,6 +106,7 @@ class People:
         self.id = id
         self.cursor = cursor
         self.conn = conn
+        self.session_no = None
 
 class Artiste(People):
     def addSong(self):
@@ -134,17 +135,17 @@ class Artiste(People):
             print("2) Find your top fans and playlists")
             print("3) Log Out")
 
-            menuChoice = int(input("Choose an option: "))
+            menuChoice = input("Choose an option: ")
 
-            if (menuChoice not in range(1, 4, 1)):
-                print("Invalid option, please input a number between x and x")
-            elif menuChoice == 1:
+            if menuChoice == "1":
                 self.addSong()
-            elif menuChoice == 2:
+            elif menuChoice == "2":
                 self.findTopFan()
-            elif menuChoice == 3:
+            elif menuChoice == "3":
                 print("\nLogging out artist...")
                 break
+            else:
+                print("Invalid option, please input a number between x and x")
 
 class User(People):
     def startSession(self):
@@ -155,35 +156,51 @@ class User(People):
         :param userID: the ID of the user currently logged in
         """
 
-        # Gets the session  with the highest number
-        current_day = date.today()
-
-        d1 = current_day.strftime("%Y-%m-%d")
-
-        self.cursor.execute("SELECT COUNT(sno) FROM sessions;")
-        number_of_sessions = self.cursor.fetchone()
-
-        # Create a new session
-        if(number_of_sessions[0] == 0):
-            # Checks whether there are any created sessions
-            new_session = (self.id,number_of_sessions[0] + 1,d1,)
-            print("Start session function")
-            print(number_of_sessions[0] + 1) 
+        if(self.session_no is not None):
+            print("You cant start a new session")
         else:
-            # Checks for the maximum session number and adds one to it
-            self.cursor.execute("SELECT MAX(sno) FROM sessions;")
-            last_added_session = self.cursor.fetchone()
-            new_session = (self.id,last_added_session[0] + 1,d1,)
-            print("Start session function")
-            print(last_added_session[0] + 1) 
-        
-        # Insert session into table
-        self.cursor.execute("insert into sessions values (?, ?, ?, NULL);",new_session)
-        self.conn.commit()
+            # Gets the session  with the highest number
+            current_day = date.today()
+
+            d1 = current_day.strftime("%Y-%m-%d")
+
+            self.cursor.execute("SELECT COUNT(sno) FROM sessions;")
+            number_of_sessions = self.cursor.fetchone()
+
+            # Create a new session
+            if(number_of_sessions[0] == 0):
+                # Checks whether there are any created sessions
+                self.session_no = number_of_sessions[0] + 1
+                new_session = (self.id,self.session_no,d1,)
+                print("Starting session " + str(self.session_no))
+            else:
+                # Checks for the maximum session number and adds one to it
+                self.cursor.execute("SELECT MAX(sno) FROM sessions;")
+                last_added_session = self.cursor.fetchone()
+                self.session_no = last_added_session[0] + 1
+                new_session = (self.id,self.session_no,d1,)
+                print("Starting session " + str(self.session_no))
+                
+            # Insert session into table
+            self.cursor.execute("insert into sessions values (?, ?, ?, NULL);",new_session)
+            self.conn.commit()
 
     def endSession(self):
-        print("End session function")
-        pass
+        # Checks if there is an active session
+        if(self.session_no is None):
+            print("Sorry you cant end the session, no session has been started")
+        else:
+            # Ends sessions if the is an existing sessiomn
+            # Updates the end value of session
+            current_day = date.today()
+
+            d1 = current_day.strftime("%Y-%m-%d")
+            self.cursor.execute("""UPDATE sessions 
+                                    SET end = ?
+                                    WHERE sno = ?  ;""" , (current_day,self.session_no))
+            print("End of session "  + str(self.session_no))
+            self.session_no = None
+            self.conn.commit()
 
     def searchArtiste(self,keywords):
         # Searches for artists that match one or more keywords provided by the user.
@@ -246,21 +263,24 @@ class User(People):
             print("4) End your listening session")
             print("5) Log Out")
 
-            menuChoice = int(input("Choose an option: "))
+            menuChoice = input("Choose an option: ")
 
-            if (menuChoice not in range(1, 8, 1)):
-                print("Invalid option, please input a number between x and x")
-            elif menuChoice == 1:
+            if menuChoice == "1":
                 self.startSession()
-            elif menuChoice == 2:
+            elif menuChoice == "2":
                 self.searchSPlaylist()
-            elif menuChoice == 3:
+            elif menuChoice == "3":
                 self.searchArtiste()
-            elif menuChoice == 4:
+            elif menuChoice == "4":
                 self.endSession()
-            elif menuChoice == 5:
+            elif menuChoice == "5":
+                if(self.session_no is not None):
+                    self.endSession()
                 print("\nLogging out user...")
                 break
+            else:
+                print("Invalid option, please input a number between x and x")
+
 
 
 def main():
