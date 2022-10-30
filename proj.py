@@ -311,8 +311,23 @@ class User(People):
                 break
             else:
                 print("Invalid option, please input a number between x and x")
+    
+    def listen(self):
+        pass
 
+    def Song_Information(self):
+        pass
 
+    def addTooPlaylist(self):
+        pass
+
+class Song:
+    def __init__(self, sid , title ,duration, cursor , conn):
+        self.sid = sid
+        self.title = title
+        self.duration = duration
+        self.cursor = cursor
+        self.conn = conn
 
 def main():
     conn = sqlite3.connect('proj.db')
