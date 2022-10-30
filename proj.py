@@ -244,31 +244,7 @@ class User(People):
         # Selecting an artist will return the id, title, and duration of all songs they have performed.
             
         # :param keywords: user inputted string
-            
-        print("Search artists function")
         pass
-#=============================================================================================================
-    def searchSong(self,keywords):
-        #Searches for songs and playlists that match one or more keywords provided by the user.
-        #Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
-        #At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
-        #If a playlist is selected, display the id, title, and total duration of songs.
-        #Songs are displayed with id, title, and duration. If selected, users can perform a song action.
-            
-        #:param keywords: user inputted string
-        SearchA= []
-
-
-        x = keywords.split(" ")
-        for k in x:
-            self.cursor.execute("SELECT * FROM songs WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k + '%',))
-            s = self.cursor.fetchall()
-        
-        
-        for i in s:
-            if i not in SearchA:
-                SearchA.append(i)
-            
 #====================================================================================================================================
     def searchSPlaylist(self,keywords):
         #Searches for songs and playlists that match one or more keywords provided by the user.
@@ -395,10 +371,3 @@ def main():
 if __name__ ==  '__main__':
     main()
 main
-
-
-def addSong():
-    pass
-
-def findTop():
-    pass
