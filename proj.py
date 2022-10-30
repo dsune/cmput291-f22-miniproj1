@@ -75,8 +75,8 @@ def loginScreen(cursor, conn):
 
         if mainChoice == "1":
             username = input("\nUsername: ")
-            # password = getpass.getpass("Password: ") # getpass hides text while user is typing
-            password = input("Password: ")
+            password = getpass.getpass("Password: ") # getpass hides text while user is typing
+            #password = input("Password: ")
 
             # check if user exists
             cursor.execute("SELECT * FROM users WHERE uid= ? COLLATE NOCASE AND pwd= ? ;", (username, password))
@@ -244,31 +244,7 @@ class User(People):
         # Selecting an artist will return the id, title, and duration of all songs they have performed.
             
         # :param keywords: user inputted string
-            
-        print("Search artists function")
         pass
-#=============================================================================================================
-    def searchSong(self,keywords):
-        #Searches for songs and playlists that match one or more keywords provided by the user.
-        #Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
-        #At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
-        #If a playlist is selected, display the id, title, and total duration of songs.
-        #Songs are displayed with id, title, and duration. If selected, users can perform a song action.
-            
-        #:param keywords: user inputted string
-        SearchA= []
-
-
-        x = keywords.split(" ")
-        for k in x:
-            self.cursor.execute("SELECT * FROM songs WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k + '%',))
-            s = self.cursor.fetchall()
-        
-        
-        for i in s:
-            if i not in SearchA:
-                SearchA.append(i)
-            
 #====================================================================================================================================
     def searchSPlaylist(self,keywords):
         #Searches for songs and playlists that match one or more keywords provided by the user.
@@ -313,6 +289,8 @@ class User(People):
         else:
             self.displayfive(SearchP,"Playlist:")
         
+        self.selection()
+        
     #----------------------------------------------------------------------------------------------------------------------------------------
     def displayfive(self,spList, type):
     #prints top five songs and playlists
@@ -340,6 +318,33 @@ class User(People):
                 self.cursor.execute("SELECT SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.title = ? COLLATE NOCASE AND p.pid = l.pid AND l.sid = s.sid ;", (p[1],))
                 total_duration = self.cursor.fetchone()
                 print(c, type, p[0], p[1], total_duration[0])
+    #-------------------------------------------------------------------------------------------------------------------------------
+
+    def selection(self):
+        """
+        Based on user selection do appropriate action
+        If user selects playlist, list all songs in the playlist with their title, duration and allow to perform song actions.
+        If songs selected, id, title, duration and allow song actions
+        """
+        choice_type = ""
+        while choice_type != "q":
+
+            #options
+            print("\n\tSELECTION MENU")
+            choice_type = input("Enter p for playlist or s for songs and q to quit: ")
+
+            #playlists(pid, title, uid)
+            #plinclude(pid, sid, sorder)
+            if choice_type == "p":
+                choice_title = input("Enter title of playlist: ")
+                self.cursor.execute("SELECT s.sid, s.title , s.duration FROM playlists p, plinclude l, songs s WHERE p.title = ? AND p.pid = l.pid AND l.sid = s.sid;",(choice_title,))
+                songl = self.cursor.fetchall()
+                self.displayall(songl, "Songs:")
+                continue
+            elif choice_type == "s":
+                choice_title = input("Enter title of song: ")
+                # call function that performs song actions to perform song actions
+
 #=============================================================================================================================================  
     def Options(self):
         """
@@ -376,7 +381,7 @@ class User(People):
             else:
                 print("Invalid option, please input a number between x and x")
 
-
+#================================================================================================================
 
 def main():
     conn = sqlite3.connect('proj.db')
@@ -395,10 +400,3 @@ def main():
 if __name__ ==  '__main__':
     main()
 main
-
-
-def addSong():
-    pass
-
-def findTop():
-    pass
