@@ -9,6 +9,7 @@ import getpass
 #db_name = sys.argv[1]
 
 #conn = sqlite3.connect(db_name)
+conn = sqlite3.connect('proj.db')
 
 def execFile(filename, cursor):
     """
@@ -233,7 +234,7 @@ class User(People):
             print("End of session "  + str(self.session_no))
             self.session_no = None
             self.conn.commit()
-
+#=======================================================================================================================================
     def searchArtiste(self,keywords):
         # Searches for artists that match one or more keywords provided by the user.
         # Retrieves artists that have any of the keywords in their name or in the title of a song they have performed.
@@ -246,7 +247,7 @@ class User(People):
             
         print("Search artists function")
         pass
-
+#=============================================================================================================
     def searchSong(self,keywords):
         #Searches for songs and playlists that match one or more keywords provided by the user.
         #Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
@@ -255,14 +256,20 @@ class User(People):
         #Songs are displayed with id, title, and duration. If selected, users can perform a song action.
             
         #:param keywords: user inputted string
+        SearchA= []
+
+
+        x = keywords.split(" ")
+        for k in x:
+            self.cursor.execute("SELECT * FROM songs WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k + '%',))
+            s = self.cursor.fetchall()
+        
+        
+        for i in s:
+            if i not in SearchA:
+                SearchA.append(i)
             
-        global connection, cursor
-
-        x= keywords.split(" ")
-        # x is a list. traverse x then match the word and place it into a SP list if the same tuple is not in SP.
-        #Display function to display top five
-        # if displayed display everything is selected display all in SP list.
-
+#====================================================================================================================================
     def searchSPlaylist(self,keywords):
         #Searches for songs and playlists that match one or more keywords provided by the user.
         #Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
@@ -272,13 +279,68 @@ class User(People):
                     
         #:param keywords: user inputted string
                     
-        global connection, cursor
+        #global connection, cursor
 
-        x= keywords.split(" ")
-        # x is a list. traverse x then match the word and place it into a SP list if the same tuple is not in SP.
-        #Display function to display top five
-        # if displayed display everything is selected display all in SP list.
-    
+        SearchP = []
+        SearchS= []
+
+
+        x = keywords.split(" ")
+        for k in x:
+            self.cursor.execute("SELECT * FROM songs WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k + '%',))
+            s = self.cursor.fetchall()
+            self.cursor.execute("SELECT * FROM playlists WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k+ '%',))
+            p = self.cursor.fetchall()
+
+        for i in s:
+            if i not in SearchS:
+                SearchS.append(i)
+        for i in p:
+            if i not in SearchP:
+                SearchP.append(i)
+
+        # displays top five songs
+        print("\n\t")
+        if len(SearchS) < 5:
+            self.displayall(SearchS, "Songs:")
+        else:
+            self.displayfive(SearchS, "Songs:")
+        
+        #display top five playlists
+        print("\n\t")
+        if len(SearchP) < 5:
+            self.displayall(SearchP, "Playlist:")
+        else:
+            self.displayfive(SearchP,"Playlist:")
+        
+    #----------------------------------------------------------------------------------------------------------------------------------------
+    def displayfive(self,spList, type):
+    #prints top five songs and playlists
+        c = 0
+        if type == "Songs:":
+            while c < 5:
+                print(c, type, spList[c][0], spList[c][1],spList[c][1])
+                c = c+1
+        else:
+            while c < 5:
+                self.cursor.execute("SELECT SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.title = ? COLLATE NOCASE AND p.pid = l.pid AND l.sid = s.sid ;", (spList[c][1],))
+                total_duration = self.cursor.fetchone()
+                #print(total_duration)
+                print(c, type, spList[c][0], spList[c][1], total_duration)
+
+    #------------------------------------------------------------------------------------------------------------------------------------
+    def displayall(self,spList, type):
+        c = 0
+        if type == "Songs:":
+            for s in spList:
+                print(c,type, s[0], s[1], s[2])
+                c = c+1
+        else:
+            for p in spList:
+                self.cursor.execute("SELECT SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.title = ? COLLATE NOCASE AND p.pid = l.pid AND l.sid = s.sid ;", (p[1],))
+                total_duration = self.cursor.fetchone()
+                print(c, type, p[0], p[1], total_duration[0])
+#=============================================================================================================================================  
     def Options(self):
         """
         Presents the menu options for a USER. 
@@ -300,7 +362,8 @@ class User(People):
             if menuChoice == "1":
                 self.startSession()
             elif menuChoice == "2":
-                self.searchSPlaylist()
+                keyword = input("Enter: ")
+                self.searchSPlaylist(keyword)
             elif menuChoice == "3":
                 self.searchArtiste()
             elif menuChoice == "4":
@@ -333,47 +396,6 @@ if __name__ ==  '__main__':
     main()
 main
 
-
-def searchSP(keywords):
-	#Searches for songs and playlists that match one or more keywords provided by the user.
-	#Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
-	#At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
-	#If a playlist is selected, display the id, title, and total duration of songs.
-	#Songs are displayed with id, title, and duration. If selected, users can perform a song action.
-	
-	#:param keywords: user inputted string
-	
-    global connection, cursor
-
-    Search = []
-    
-
-    #x= keywords.split(" ")
-
-    # x is a list. traverse x then match the word and place it into a SP list if the same tuple is not in SP.
-    #Display function to display top five
-    # if displayed display everything is selected display all in SP list.
-
-
-
-def searchA(keywords):
-	"""
-	Searches for artists that match one or more keywords provided by the user.
-	Retrieves artists that have any of the keywords in their name or in the title of a song they have performed.
-	Each match returns the name, nationality, and number of songs performed by that artist.
-	Matches are ordered by number of matching keywords (highest at the top).
-	At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
-	Selecting an artist will return the id, title, and duration of all songs they have performed.
-	
-	:param keywords:
-	"""
-    pass
-
-def endSession():
-	"""
-	
-	"""
-    pass
 
 def addSong():
     pass
