@@ -1,5 +1,8 @@
+from curses.ascii import NUL
+from multiprocessing import connection
 import sqlite3
 from sqlite3 import OperationalError
+from datetime import date
 import sys
 import getpass
 
@@ -7,7 +10,7 @@ import getpass
 
 #conn = sqlite3.connect(db_name)
 
-def execFile(filename):
+def execFile(filename, cursor):
     """
     Allows the reading and execution of SQL queries from files that are passed through as arguments
 
@@ -19,9 +22,14 @@ def execFile(filename):
     lines = execFile.split(';')
 
     for line in lines:
-        c.execute(line)
+        cursor.execute(line)
 
-def loginScreen(cursor):
+
+def regAccount():
+    print("Register user function")
+    pass
+
+def loginScreen(cursor, conn):
     """
     Prompts the user to login with their user ID and password.
     Checks if user exists and password is correct, determines type of user.
@@ -35,47 +43,56 @@ def loginScreen(cursor):
 
         # initial menu when starting the program
         print("\nMAIN MENU")
-        mainChoice = int(input("1) Log In\n2) Register User \n3) Exit\nWelcome! Please choose an option: "))
+        mainChoice = input("1) Log In\n2) Register User \n3) Exit\nWelcome! Please choose an option: ")
 
-        if mainChoice == 1:
+        if mainChoice == "1":
             username = input("\nUsername: ")
-            password = getpass.getpass("Password: ") # getpass hides text while user is typing
+            # password = getpass.getpass("Password: ") # getpass hides text while user is typing
+            password = input("Password: ")
 
             # check if user exists
             cursor.execute("SELECT * FROM users WHERE uid= ? COLLATE NOCASE AND pwd= ? ;", (username, password))
-            userResult = c.fetchone()
+            userResult = cursor.fetchone()
 
             # check if artist exists
             cursor.execute("SELECT * FROM artists WHERE aid= ? COLLATE NOCASE AND pwd= ? ;", (username, password))
-            artistResult = c.fetchone()
+            artistResult = cursor.fetchone()
 
             # if login info appears in users AND artists tables
             if userResult is not None and artistResult is not None:
                 print("\nHello " + userResult[1] + "!")
                 while loginChoice not in [1, 2]:
                     print("\nAccount belongs to user and artist")
-                    loginChoice = int(input("1) User\n2) Artist\nChoose how you would like to log in: "))
-                if loginChoice == 1:
-                    print("\nLogging in as a user...")
-                    userOptions()
-                elif loginChoice == 2:
-                    print("\nLogging in as an artist...")
-                    artistOptions()
+                    loginChoice = input("1) User\n2) Artist\nChoose how you would like to log in: ")
+                    if loginChoice == "1":
+                        print("\nLogging in as a user...")
+                        # userOptions()
+                        person = User(username , cursor , conn)
+                        return person
+                    elif loginChoice == "2":
+                        print("\nLogging in as an artist...")
+                        # artistOptions()
+                        person = Artiste(username , cursor, conn)
+                        return person 
                 
             # if login info appears in users OR artists tables
             elif userResult is not None:
                 print("\nHello " + userResult[1] + "!")
-                userOptions()
+                # userOptions()
+                person = User(username , cursor, conn)
+                return person
             elif artistResult is not None:
                 print("\nHello " + artistResult[1] + "!")
-                artistOptions()
+                # artistOptions()
+                person = Artiste(username , cursor, conn)
+                return person
                 
             # login info does not exist
             else:
                 print("\nAccount does not match our records")
-        elif mainChoice == 2:
+        elif mainChoice == "2":
             regAccount()
-        elif mainChoice == 3:
+        elif mainChoice == "3":
             print("\nShutting down...")
             break
         else:
@@ -85,8 +102,10 @@ def loginScreen(cursor):
     print("Program shut down")
 
 class People:
-    def __init__(self, id):
+    def __init__(self, id , cursor , conn):
         self.id = id
+        self.cursor = cursor
+        self.conn = conn
 
 class Artiste(People):
     def addSong(self):
@@ -101,7 +120,7 @@ class Artiste(People):
         print("Find top fans/playlists function")
         pass
 
-    def artistOptions(self):
+    def Options(self):
         """
         Presents the menu options for an ARTIST. 
         Calls the appropriate function according to the menu choice.
@@ -135,8 +154,32 @@ class User(People):
 
         :param userID: the ID of the user currently logged in
         """
-        print("Start session function")
-        pass
+
+        # Gets the session  with the highest number
+        current_day = date.today()
+
+        d1 = current_day.strftime("%Y-%m-%d")
+
+        self.cursor.execute("SELECT COUNT(sno) FROM sessions;")
+        number_of_sessions = self.cursor.fetchone()
+
+        # Create a new session
+        if(number_of_sessions[0] == 0):
+            # Checks whether there are any created sessions
+            new_session = (self.id,number_of_sessions[0] + 1,d1,)
+            print("Start session function")
+            print(number_of_sessions[0] + 1) 
+        else:
+            # Checks for the maximum session number and adds one to it
+            self.cursor.execute("SELECT MAX(sno) FROM sessions;")
+            last_added_session = self.cursor.fetchone()
+            new_session = (self.id,last_added_session[0] + 1,d1,)
+            print("Start session function")
+            print(last_added_session[0] + 1) 
+        
+        # Insert session into table
+        self.cursor.execute("insert into sessions values (?, ?, ?, NULL);",new_session)
+        self.conn.commit()
 
     def endSession(self):
         print("End session function")
@@ -171,7 +214,7 @@ class User(People):
         #Display function to display top five
         # if displayed display everything is selected display all in SP list.
 
-    def searchPlaylist(self,keywords):
+    def searchSPlaylist(self,keywords):
         #Searches for songs and playlists that match one or more keywords provided by the user.
         #Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
         #At most, 5 matches are shown at a time, user has the option to select a match or view the rest in a paginated, downward format.
@@ -187,7 +230,7 @@ class User(People):
         #Display function to display top five
         # if displayed display everything is selected display all in SP list.
     
-    def userOptions(self):
+    def Options(self):
         """
         Presents the menu options for a USER. 
         Calls the appropriate function according to the menu choice.
@@ -210,9 +253,9 @@ class User(People):
             elif menuChoice == 1:
                 self.startSession()
             elif menuChoice == 2:
-                self.searchSP()
+                self.searchSPlaylist()
             elif menuChoice == 3:
-                self.searchA()
+                self.searchArtiste()
             elif menuChoice == 4:
                 self.endSession()
             elif menuChoice == 5:
@@ -224,9 +267,10 @@ def main():
     conn = sqlite3.connect('proj.db')
 
     c = conn.cursor()
-    execFile('prj-tables.sql')
-    execFile('test-data.sql')
-    loginScreen(c)
+    # execFile('prj-tables.sql',c)
+    # execFile('test-data.sql',c )
+    person = loginScreen(c , conn)
+    person.Options() 
 
     conn.commit()
     conn.close()
