@@ -337,7 +337,7 @@ class User(People):
             #plinclude(pid, sid, sorder)
             if choice_type == "p":
                 choice_title = input("Enter title of playlist: ")
-                self.cursor.execute("SELECT s.sid, s.title , s.duration FROM playlists p, plinclude l, songs s WHERE p.title = ? AND p.pid = l.pid AND l.sid = s.sid;",(choice_title,))
+                self.cursor.execute("SELECT s.sid, s.title , s.duration FROM playlists p, plinclude l, songs s WHERE p.title = ? COLLATE NOCASE AND p.pid = l.pid AND l.sid = s.sid;",(choice_title,))
                 songl = self.cursor.fetchall()
                 self.displayall(songl, "Songs:")
                 continue
