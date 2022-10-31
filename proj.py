@@ -6,6 +6,7 @@ from datetime import date
 import sys
 import getpass
 import random
+from turtle import title
 
 #db_name = sys.argv[1]
 
@@ -333,43 +334,42 @@ class User(People):
                     
         #global connection, cursor
 
-        Search = {}
+        # Stores songs
+        Search_S = {}
+        # Stores Playlist
+        Search_P = {}
         x = keywords.split(" ")
         for k in x:
-            self.cursor.execute("SELECT s.sid FROM songs s WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k + '%',))
+            self.cursor.execute("SELECT * FROM songs s WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k + '%',))
             s = self.cursor.fetchall()
-            self.cursor.execute("SELECT playlists.pid FROM playlists WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k+ '%',))
+            self.cursor.execute("SELECT * FROM playlists WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k+ '%',))
             p = self.cursor.fetchall()
+            # Checks for how many times a song occurs
             for i in s:
-                if i[0] not in Search:
-                    Search["s" + str(i[0]) ] = 1
+                if i[0] not in Search_S:
+                    # Creates Class to store song in dictionar
+                    song = Track_Song_Playlist(i[0] ,i[1] , i[2], 1 , "song")
+                    Search_S[i[0]] = song
                 else:
-                    Search["s" + str(i[0]) ] += 1
+                    # Adds one to the number of matches in the Track_Song_Playlist class
+                    Search_S[i[0]].no_of_matches += 1
             for k in p:
-                if k[0] not in Search:
-                    Search["p" + str(k[0]) ] = 1
+                if k[0] not in Search_P:
+                    # Creates Class to store playlist in dictionary
+                    playlist = Track_Song_Playlist(k[0] ,k[1] , None, 1 , "playlist")
+                    Search_P[k[0]] = playlist
                 else:
-                    Search["p" + str(k[0]) ] += 1
-        self.displayfive(Search)
+                    # Adds one to the number of matches in the Track_Song_Playlist class
+                    Search_P[k[0]].no_of_matches += 1
+
+        print(Search_S)
+        print(Search_P)
+    #     self.displayfive(Search)
 
         
 
-        #SearchP = []
-        #SearchS= []
-
-
-        #for k in x:
-            #self.cursor.execute("SELECT * FROM songs WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k + '%',))
-            #s = self.cursor.fetchall()
-            #self.cursor.execute("SELECT * FROM playlists WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k+ '%',))
-            #p = self.cursor.fetchall()
-
-        #for i in s:
-            #if i not in SearchS:
-                #SearchS.append(i)
-        #for i in p:
-            #if i not in SearchP:
-                #SearchP.append(i)
+    #     #SearchP = []
+    #     #SearchS= []
 
         # displays top five songs
         #print("\n\t")
@@ -422,7 +422,7 @@ class User(People):
                 playlist = self.cursor.fetchone()
                 print("Playlist:" , playlist[0], playlist[1], playlist[2])
                 c +=1
-    #-------------------------------------------------------------------------------------------------------------------------------
+    # #-------------------------------------------------------------------------------------------------------------------------------
 
     def selection(self):
         """
@@ -444,7 +444,7 @@ class User(People):
                 self.displayall(songl, "Songs:")
                 continue
             elif choice_type == "s":
-                choice_title = input("Enter title of song: ")
+                choice_title = input("Enter title of song: ")  
                 # call function that performs song actions to perform song actions
 
 #=============================================================================================================================================  
@@ -483,14 +483,25 @@ class User(People):
             else:
                 print("Invalid option, please input a number between x and x")
 
+class Track_Song_Playlist:
+    def __init__(self, id , title , duration, no_of_matches ,type):
+        self.id = id
+        self.title = title
+        self.duration = duration
+        self.no_of_matches = no_of_matches
+        self.type = type
+        self.session_no = None
+
+
+
 #================================================================================================================
 
 def main():
     conn = sqlite3.connect('proj.db')
 
     c = conn.cursor()
-    execFile('prj-tables.sql',c)
-    execFile('test-data.sql',c )
+    # execFile('prj-tables.sql',c)
+    # execFile('test-data.sql',c )
     person = loginScreen(c , conn)
     if(person is not None):
         person.Options() 
@@ -501,4 +512,3 @@ def main():
 
 if __name__ ==  '__main__':
     main()
-main
