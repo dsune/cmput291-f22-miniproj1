@@ -264,7 +264,6 @@ class User(People):
             s = self.cursor.fetchall()
             self.cursor.execute("SELECT playlists.pid FROM playlists WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k+ '%',))
             p = self.cursor.fetchall()
-            print("This is pid: ", p)
             for i in s:
                 if i[0] not in Search:
                     Search["s" + str(i[0]) ] = 1
@@ -313,35 +312,40 @@ class User(People):
         #self.selection()
         
     #----------------------------------------------------------------------------------------------------------------------------------------
-    def displayfive(self,spList):
+    def displayall(self,spList):
     #prints top five songs and playlists
         c = 0
-        while c < 1:
-            for val in sorted(spList, key=spList.get, reverse=True):
-                #print (val , spList[val])
-                if val[0] == "s":
-                    v = val[1:]
-                    self.cursor.execute("SELECT s.sid, s.title, s.duration FROM songs s WHERE s.sid = ?;", (int(v),))
-                    song = self.cursor.fetchone()
-                    print("Song:" , song[0], song[1], song[2])
-                elif val[0] == "p":
-                    v = val[1:]
-                    self.cursor.execute("SELECT p.pid, p.title, SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.pid = ? AND p.pid = l.pid AND l.sid = s.sid ;", (int(v),))
-                    playlist = self.cursor.fetchone()
-                    print("Playlist:" , playlist[0], playlist[1], playlist[2])
-            c += 1
+        print()
+        for val in sorted(spList, key=spList.get, reverse=True):
+            #print (val , spList[val])
+            if val[0] == "s":
+                v = val[1:]
+                self.cursor.execute("SELECT s.sid, s.title, s.duration FROM songs s WHERE s.sid = ?;", (int(v),))
+                song = self.cursor.fetchone()
+                print("Song:" , song[0], song[1], song[2])
+            elif val[0] == "p":
+                v = val[1:]
+                self.cursor.execute("SELECT p.pid, p.title, SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.pid = ? AND p.pid = l.pid AND l.sid = s.sid ;", (int(v),))
+                playlist = self.cursor.fetchone()
+                print("Playlist:" , playlist[0], playlist[1], playlist[2])
     #------------------------------------------------------------------------------------------------------------------------------------
-    def displayall(self,spList, type):
+    def displayfive(self,spList):
         c = 0
-        if type == "Songs:":
-            for s in spList:
-                print(c,type, s[0], s[1], s[2])
-                c = c+1
-        else:
-            for p in spList:
-                self.cursor.execute("SELECT SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.title = ? COLLATE NOCASE AND p.pid = l.pid AND l.sid = s.sid ;", (p[1],))
-                total_duration = self.cursor.fetchone()
-                print(c, type, p[0], p[1], total_duration[0])
+        print()
+        for val in sorted(spList, key=spList.get, reverse=True):
+            #print (val , spList[val])
+            if val[0] == "s" and c < 5:
+                v = val[1:]
+                self.cursor.execute("SELECT s.sid, s.title, s.duration FROM songs s WHERE s.sid = ?;", (int(v),))
+                song = self.cursor.fetchone()
+                print("Song:" , song[0], song[1], song[2])
+                c += 1
+            elif val[0] == "p" and c < 5:
+                v = val[1:]
+                self.cursor.execute("SELECT p.pid, p.title, SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.pid = ? AND p.pid = l.pid AND l.sid = s.sid ;", (int(v),))
+                playlist = self.cursor.fetchone()
+                print("Playlist:" , playlist[0], playlist[1], playlist[2])
+                c +=1
     #-------------------------------------------------------------------------------------------------------------------------------
 
     def selection(self):
