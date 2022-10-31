@@ -5,6 +5,7 @@ from sqlite3 import OperationalError
 from datetime import date
 import sys
 import getpass
+import random
 
 #db_name = sys.argv[1]
 
@@ -143,8 +144,83 @@ class People:
 
 class Artiste(People):
     def addSong(self):
-        print("Add song function")
-        pass
+        while(True):
+            # prompts user for song name and duration they would like to add
+            song_name = input("Enter the name of your song: ").lower()
+            while(True):
+                try:
+                    song_dur = int(input("Enter the duration of your song: "))
+                except:
+                    print("You must enter an integer")
+                    continue
+                break
+
+            # check if the song and duration already exists for this artist
+            self.cursor.execute("""
+                                SELECT s.title
+                                FROM songs s, perform p
+                                WHERE p.aid = ?
+                                AND p.sid = s.sid
+                                AND lower(s.title) = ?
+                                AND s.duration = ?;
+                                """, (self.id, song_name, song_dur,))
+            result = self.cursor.fetchone()
+            if(result == None):
+                # checks if song id exists before inserting into table
+                self.cursor.execute("""
+                                    SELECT sid
+                                    FROM songs;
+                                    """)
+                id_list = self.cursor.fetchall()
+                while(True):
+                    new_id = random.randint(0, 500)
+                    if new_id not in id_list:
+                        break
+                    else:
+                        continue
+                
+                # add new song to the 'songs' table
+                self.cursor.execute("""
+                                    INSERT INTO songs VALUES (?, ?, ?)
+                                    """, (new_id, song_name, song_dur))
+                
+                # adds a new entry to 'perform' table with current artist id and the new song id
+                self.cursor.execute("""
+                                    INSERT INTO perform VALUES (?, ?)
+                                    """, (self.id, new_id))
+                
+                # prompts user for any additional artists that performed the song
+                while(True):
+                    add_perform = input("Did another artist perform this song with you? (y/n): ").lower()
+                    if add_perform == 'y':
+                        while(True):
+                            add_aid = input("Enter their Artist ID: ")
+
+                            # check if the inputted Artist ID exists
+                            self.cursor.execute("""
+                                                SELECT aid
+                                                FROM artists
+                                                WHERE aid = ?;
+                                                """, (add_aid,))
+                            aid_search = self.cursor.fetchone()
+                            if aid_search == None:
+                                print("\nThat is not a valid Artist ID, please try a different one")
+                                continue
+                            # if the Artist ID exists, adds a new entry to 'perform' table for the inputted Artist ID
+                            else:
+                                self.cursor.execute("""
+                                                    INSERT INTO perform VALUES (?, ?)
+                                                    """, (add_aid, new_id))
+                            break
+                    elif add_perform == 'n':
+                        break
+                    else:
+                        print("Invalid option, please enter 'y' or 'n'")
+                break
+            else:
+                print("\nThis song already exists in your discography")
+                continue
+        self.conn.commit()
 
     def findTopFan(self):
         print("Find top fans/playlists function")
@@ -413,8 +489,8 @@ def main():
     conn = sqlite3.connect('proj.db')
 
     c = conn.cursor()
-    # execFile('prj-tables.sql',c)
-    # execFile('test-data.sql',c )
+    execFile('prj-tables.sql',c)
+    execFile('test-data.sql',c )
     person = loginScreen(c , conn)
     if(person is not None):
         person.Options() 
