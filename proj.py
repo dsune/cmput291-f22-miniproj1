@@ -361,8 +361,6 @@ class User(People):
             print("\n\tSELECTION MENU")
             choice_type = input("Enter p for playlist or s for songs and q to quit: ")
 
-            #playlists(pid, title, uid)
-            #plinclude(pid, sid, sorder)
             if choice_type == "p":
                 choice_title = input("Enter title of playlist: ")
                 self.cursor.execute("SELECT s.sid, s.title , s.duration FROM playlists p, plinclude l, songs s WHERE p.title = ? COLLATE NOCASE AND p.pid = l.pid AND l.sid = s.sid;",(choice_title,))
