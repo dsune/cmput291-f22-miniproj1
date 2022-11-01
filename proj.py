@@ -371,8 +371,6 @@ class User(People):
                     
         #:param keywords: user inputted string
                     
-        #global connection, cursor
-
         # Stores songs
         Search_S = {}
         # Stores Playlist
@@ -383,47 +381,44 @@ class User(People):
             s = self.cursor.fetchall()
             self.cursor.execute("SELECT * FROM playlists WHERE title LIKE ? COLLATE NOCASE ;", ('%'+ k+ '%',))
             p = self.cursor.fetchall()
+
             # Checks for how many times a song occurs
             for i in s:
                 if i[0] not in Search_S:
-                    # Creates Class to store song in dictionar
+                    # Creates Class to store song in dictionary
                     song = Track_Song_Playlist(i[0] ,i[1] , i[2], 1 , "song")
                     Search_S[i[0]] = song
                 else:
                     # Adds one to the number of matches in the Track_Song_Playlist class
                     Search_S[i[0]].no_of_matches += 1
+
             for k in p:
                 if k[0] not in Search_P:
                     # Creates Class to store playlist in dictionary
-                    playlist = Track_Song_Playlist(k[0] ,k[1] , None, 1 , "playlist")
+                    duration = self.total_duration(k[0])
+                    playlist = Track_Song_Playlist(k[0] ,k[1] , duration, 1 , "playlist")
                     Search_P[k[0]] = playlist
                 else:
                     # Adds one to the number of matches in the Track_Song_Playlist class
                     Search_P[k[0]].no_of_matches += 1
-        self.Create_new_table_p_s_duration(Search_S,Search_P)
-    #     self.displayfive(Search)
 
+
+        sortedPSlist = self.Create_new_table_p_s_duration(Search_S,Search_P)
+
+        if len(sortedPSlist) < 5:
+            self.displayall(sortedPSlist)
+        else:
+            self.displayfive(sortedPSlist)
         
+        self.selection(sortedPSlist)
 
-    #     #SearchP = []
-    #     #SearchS= []
-
-        # displays top five songs
-        #print("\n\t")
-        #if len(SearchS) < 5:
-            #self.displayall(SearchS, "Songs:")
-        #else:
-            #self.displayfive(SearchS, "Songs:")
-        
-        #display top five playlists
-        #print("\n\t")
-        #if len(SearchP) < 5:
-            #self.displayall(SearchP, "Playlist:")
-        #else:
-            #self.displayfive(SearchP,"Playlist:")
-        
-        #self.selection()
-
+#-------------------------------------------------------------------------------------------
+    def total_duration(self, id):
+        #total duration of playlist
+        self.cursor.execute("SELECT SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.pid = ? AND p.pid = l.pid AND l.sid = s.sid ;", (id,))
+        t_duration = self.cursor.fetchone()
+        return t_duration[0]            
+#--------------------------------------------------------------------------------------------------------------------
     # Returns tuple of ordered matches of songs and playlists
     def Create_new_table_p_s_duration(self , songs , playlist):
         # Create table to store songs and playlists
@@ -466,65 +461,84 @@ class User(People):
 
         return songs_playlist_combine
     #----------------------------------------------------------------------------------------------------------------------------------------
-    def displayall(self,spList):
-    #prints top five songs and playlists
-        c = 0
-        print()
-        for val in sorted(spList, key=spList.get, reverse=True):
-            #print (val , spList[val])
-            if val[0] == "s":
-                v = val[1:]
-                self.cursor.execute("SELECT s.sid, s.title, s.duration FROM songs s WHERE s.sid = ?;", (int(v),))
-                song = self.cursor.fetchone()
-                print("Song:" , song[0], song[1], song[2])
-            elif val[0] == "p":
-                v = val[1:]
-                self.cursor.execute("SELECT p.pid, p.title, SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.pid = ? AND p.pid = l.pid AND l.sid = s.sid ;", (int(v),))
-                playlist = self.cursor.fetchone()
-                print("Playlist:" , playlist[0], playlist[1], playlist[2])
+    def displayfive(self,SPlist):
+        #prints top five songs and playlists
+         # id ,title, duration, type
+        indx = 1
+        for sp in SPlist:
+            if indx <= 5:
+                print(indx, ") " + "| Type: "+ sp[3] + "| ID:", sp[0], "| Title:", sp[1], "| Duration:", sp[2])
+                indx += 1
+            else:
+                break
+
     #------------------------------------------------------------------------------------------------------------------------------------
-    def displayfive(self,spList):
-        c = 0
-        print()
-        for val in sorted(spList, key=spList.get, reverse=True):
-            #print (val , spList[val])
-            if val[0] == "s" and c < 5:
-                v = val[1:]
-                self.cursor.execute("SELECT s.sid, s.title, s.duration FROM songs s WHERE s.sid = ?;", (int(v),))
-                song = self.cursor.fetchone()
-                print("Song:" , song[0], song[1], song[2])
-                c += 1
-            elif val[0] == "p" and c < 5:
-                v = val[1:]
-                self.cursor.execute("SELECT p.pid, p.title, SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.pid = ? AND p.pid = l.pid AND l.sid = s.sid ;", (int(v),))
-                playlist = self.cursor.fetchone()
-                print("Playlist:" , playlist[0], playlist[1], playlist[2])
-                c +=1
+    def displayall(self,SPlist):
+        indx = 1
+        for sp in SPlist:
+            print(indx, ") " + "| Type: "+ sp[3] + "| ID:", sp[0], "| Title:", sp[1], "| Duration:", sp[2])
+            indx += 1
     # #-------------------------------------------------------------------------------------------------------------------------------
 
-    def selection(self):
+    def selection(self, SPList):
         """
-        Based on user selection do appropriate action
-        If user selects playlist, list all songs in the playlist with their title, duration and allow to perform song actions.
-        If songs selected, id, title, duration and allow song actions
+        Based on user selection do appropriate action.
         """
-        choice_type = ""
-        while choice_type != "q":
+        choice = ""
+        while choice != "q":
 
             #options
             print("\n\tSELECTION MENU")
-            choice_type = input("Enter p for playlist or s for songs and q to quit: ")
+            print("Select playlist or song based on number")
+            print("Enter s to display all or q to quit selection menu")
+            choice = input("Select: ")
 
-            if choice_type == "p":
-                choice_title = input("Enter title of playlist: ")
-                self.cursor.execute("SELECT s.sid, s.title , s.duration FROM playlists p, plinclude l, songs s WHERE p.title = ? COLLATE NOCASE AND p.pid = l.pid AND l.sid = s.sid;",(choice_title,))
-                songl = self.cursor.fetchall()
-                self.displayall(songl, "Songs:")
+            if choice.isdigit():
+                c = int(choice) - 1
+                item = SPList[c]
+                if item[3] == "song":
+                    self.songSelected(item)
+                elif item[3] == "playlist":
+                    self.playlistSelected(item)
+                    
+            elif choice.lower() == "q":
+                print("\nQuitting selection menu...")
+                break
+            elif choice.lower() == "s":
+                self.displayall(SPList)
+            else:
+                print("Invalid option! Try again.")
                 continue
-            elif choice_type == "s":
-                choice_title = input("Enter title of song: ")  
-                # call function that performs song actions to perform song actions
+    #-----------------------------------------------------------------------------------------
+    def songSelected(self, song):
+        # song actions: (1) listen to it, (2) see more information about it, or (3) add it to a playlist.
+        #  More information for a song is the names of artists who performed it in addition to id, title and duration of the song as well as the names of playlists the song is in (if any). 
+        # When a song is selected for listening, a listening event is recorded within the current session of the user (if a session has already started for the user) or within a new session (if not). 
+        # When starting a new session, follow the steps given for starting a session.
+        #  A listening event is recorded by either inserting a row to table listen or increasing the listen count in this table by 1. 
+        # When adding a song to a playlist, the song can be added to an existing playlist owned by the user (if any) or to a new playlist. 
+        # When it is added to a new playlist, a new playlist should be created with a unique id (created by your system) and the uid set to the id of the user and a title should be obtained from input. 
+        print("Song actions here")
+        pass
+    #-----------------------------------------------------------------------------------
+    def playlistSelected(self, playlist):
+        # query to return all songs in playlist.
+        # using fetchall create a list of them
+        # ask the user to enter which song to play and call songSelected to do song actions
+        # if user doesnt want to play any song in playlist, quit menu
+        #songs(sid, title, duration)
 
+        self.cursor.execute("SELECT s.sid, s.title, s.duration FROM playlists p, songs s, plinclude l WHERE p.title = ? AND p.pid = l.pid AND l.sid = s.sid", (playlist[1],))
+        l = self.cursor.fetchall()
+        tohold = []
+        for i in l:
+            song = Track_Song_Playlist(i[0] ,i[1] , i[2], 1 , "song")
+            tohold.append((song.id,song.title,song.duration, song.type))
+        self.displayall(tohold)
+        self.selection(tohold)
+        
+
+        pass
 #=============================================================================================================================================  
     def Options(self):
         """
@@ -569,9 +583,6 @@ class Track_Song_Playlist:
         self.no_of_matches = no_of_matches
         self.type = type
         self.session_no = None
-
-
-
 #================================================================================================================
 
 def main():
