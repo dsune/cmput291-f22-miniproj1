@@ -224,12 +224,48 @@ class Artiste(People):
         self.conn.commit()
 
     def findTopFan(self):
-        print("Find top fans/playlists function")
-        pass
+        rank = 1
+
+        # finds fans who have listen to this artist, ordered by total listening time
+        self.cursor.execute("""
+                            SELECT l.uid, sum(s.duration * l.cnt) as total_listen
+                            FROM listen l, songs s, perform p
+                            WHERE l.sid = s.sid
+                            AND s.sid = p.sid
+                            AND p.aid = ?
+                            GROUP BY l.uid, p.aid
+                            ORDER BY total_listen desc
+                            LIMIT 3;
+                            """, (self.id,))
+        fans = self.cursor.fetchall()
+
+        # prints (at most) the top 3 fans for this artist
+        print("\nTop Fans for " + self.id)
+        for fan in fans:
+            print(str(rank) + ") " + "User ID: " + fan[0] + " | Listening Time: " + str(round(fan[1], 2)))
+            rank += 1
 
     def findTopPlaylist(self):
-        print("Find top fans/playlists function")
-        pass
+        rank = 1
+
+        # finds playlists that contain songs by this artist
+        self.cursor.execute("""
+                            SELECT i.pid, pl.title, COUNT(*) as in_playlist
+                            FROM plinclude i,  perform p, playlists pl
+                            WHERE p.aid = ?
+                            AND p.sid = i.sid
+                            AND i.pid = pl.pid
+                            GROUP BY i.pid, pl.title
+                            ORDER BY in_playlist DESC
+                            LIMIT 3;
+                            """, (self.id,))
+        playlists = self.cursor.fetchall()
+
+        # prints (at most) the top 3 playlists based on amount of songs by this artist included in the playlist
+        print("\nTop Playlists for " + self.id)
+        for pl in playlists:
+            print(str(rank) + ") " + "Playlist ID: " + str(pl[0]) + " | Title: " + str(pl[1]) + " | Amount of your songs in this playlist: " + str(pl[2]))
+            rank += 1
 
     def Options(self):
         """
@@ -242,8 +278,9 @@ class Artiste(People):
             # menu options
             print("\nARTIST MENU")
             print("1) Add a song")
-            print("2) Find your top fans and playlists")
-            print("3) Log Out")
+            print("2) Find your top fans")
+            print("3) Find your top playlists")
+            print("4) Log Out")
 
             menuChoice = input("Choose an option: ")
 
@@ -252,6 +289,8 @@ class Artiste(People):
             elif menuChoice == "2":
                 self.findTopFan()
             elif menuChoice == "3":
+                self.findTopPlaylist()
+            elif menuChoice == "4":
                 print("\nLogging out artist...")
                 break
             else:
@@ -539,8 +578,8 @@ def main():
     conn = sqlite3.connect('proj.db')
 
     c = conn.cursor()
-    # execFile('prj-tables.sql',c)
-    # execFile('test-data.sql',c )
+    execFile('prj-tables.sql',c)
+    execFile('test-data.sql',c )
     person = loginScreen(c , conn)
     if(person is not None):
         person.Options() 
