@@ -361,9 +361,7 @@ class User(People):
                 else:
                     # Adds one to the number of matches in the Track_Song_Playlist class
                     Search_P[k[0]].no_of_matches += 1
-
-        print(Search_S)
-        print(Search_P)
+        self.Create_new_table_p_s_duration(Search_S,Search_P)
     #     self.displayfive(Search)
 
         
@@ -386,7 +384,48 @@ class User(People):
             #self.displayfive(SearchP,"Playlist:")
         
         #self.selection()
+
+    # Returns tuple of ordered matches of songs and playlists
+    def Create_new_table_p_s_duration(self , songs , playlist):
+        # Create table to store songs and playlists
+        self.cursor.execute("""
+                                CREATE TABLE IF NOT EXISTS songs_playlist(
+                                    id INT,
+                                    title CHAR,
+                                    duration INT,
+                                    Match INT ,
+                                    type CHAR,
+                                    PRIMARY KEY(id,type)
+                                )
+                             """)
         
+        # Insert songs into the new table
+        for s in songs:
+            self.cursor.execute(""" 
+                                    INSERT INTO songs_playlist VALUES (?,?,?,?,?)
+                                """, (songs[s].id , songs[s].title, songs[s].duration , songs[s].no_of_matches , songs[s].type,))
+        
+        #  Insert playlist into the playlist
+        for p in playlist:
+            self.cursor.execute(""" 
+                                    INSERT INTO songs_playlist VALUES (?,?,?,?,?)
+                                """, (playlist[p].id , playlist[p].title, playlist[p].duration , playlist[p].no_of_matches , playlist[p].type,))
+        
+        # Order the table based on number of matches
+        self.cursor.execute("""SELECT id , title , duration , type 
+                                FROM songs_playlist
+                                ORDER BY Match
+                                DESC ;   
+                                """)
+        
+        songs_playlist_combine = self.cursor.fetchall()
+        # Deletes table after search
+
+        self.cursor.execute("""
+                                DROP TABLE songs_playlist ;
+        """)
+
+        return songs_playlist_combine
     #----------------------------------------------------------------------------------------------------------------------------------------
     def displayall(self,spList):
     #prints top five songs and playlists
