@@ -135,6 +135,7 @@ def loginScreen(cursor, conn):
             continue
 
     print("Program shut down")
+    return None
 
 class People:
     def __init__(self, id , cursor , conn):
@@ -239,11 +240,15 @@ class Artiste(People):
                             """, (self.id,))
         fans = self.cursor.fetchall()
 
-        # prints (at most) the top 3 fans for this artist
-        print("\nTop Fans for " + self.id)
-        for fan in fans:
-            print(str(rank) + ") " + "User ID: " + fan[0] + " | Listening Time: " + str(round(fan[1], 2)))
-            rank += 1
+        if not fans:
+            print("\nNobody has listened to your music")
+        else:
+            # prints (at most) the top 3 fans for this artist
+            print("\nTop Fans for " + self.id)
+            for fan in fans:
+                print(str(rank) + ") " + "User ID: " + fan[0] + " | Listening Time: " + str(round(fan[1], 2)))
+                rank += 1
+            
 
     def findTopPlaylist(self):
         rank = 1
@@ -261,11 +266,14 @@ class Artiste(People):
                             """, (self.id,))
         playlists = self.cursor.fetchall()
 
-        # prints (at most) the top 3 playlists based on amount of songs by this artist included in the playlist
-        print("\nTop Playlists for " + self.id)
-        for pl in playlists:
-            print(str(rank) + ") " + "Playlist ID: " + str(pl[0]) + " | Title: " + str(pl[1]) + " | Amount of your songs in this playlist: " + str(pl[2]))
-            rank += 1
+        if not playlists:
+            print("\nThere are no playlists that contain your songs")
+        else:
+            # prints (at most) the top 3 playlists based on amount of songs by this artist included in the playlist
+            print("\nTop Playlists for " + self.id)
+            for pl in playlists:
+                print(str(rank) + ") " + "Playlist ID: " + str(pl[0]) + " | Title: " + str(pl[1]) + " | Number of your songs in this playlist: " + str(pl[2]))
+                rank += 1
 
     def Options(self):
         """
@@ -276,7 +284,7 @@ class Artiste(People):
             menuChoice = 0
 
             # menu options
-            print("\nARTIST MENU")
+            print("\n\tARTIST MENU")
             print("1) Add a song")
             print("2) Find your top fans")
             print("3) Find your top playlists")
@@ -476,7 +484,7 @@ class User(People):
     def displayall(self,SPlist):
         indx = 1
         for sp in SPlist:
-            print(indx, ") " + "| Type: "+ sp[3] + "| ID:", sp[0], "| Title:", sp[1], "| Duration:", sp[2])
+            print(str(indx) + ") " + "Type: "+ sp[3] + " | ID:", sp[0], "| Title:", sp[1], "| Duration:", sp[2])
             indx += 1
     # #-------------------------------------------------------------------------------------------------------------------------------
 
@@ -489,8 +497,9 @@ class User(People):
 
             #options
             print("\n\tSELECTION MENU")
-            print("Select playlist or song based on number")
-            print("Enter s to display all or q to quit selection menu")
+            print("Select a Playlist or Song (input a number")
+            print("Input 's' to Display All Results")
+            print("Input 'q' to Exit Selection Menu")
             choice = input("Select: ")
 
             if choice.isdigit():
@@ -549,7 +558,7 @@ class User(People):
             menuChoice = 0
 
             # menu options
-            print("\nUSER MENU")
+            print("\n\tUSER MENU")
             print("1) Start a listening session")
             print("2) Search songs and playlists")
             print("3) Search artists")
@@ -591,9 +600,13 @@ def main():
     c = conn.cursor()
     execFile('prj-tables.sql',c)
     execFile('test-data.sql',c )
-    person = loginScreen(c , conn)
-    if(person is not None):
-        person.Options() 
+    
+    while(True):
+        person = loginScreen(c , conn)
+        if(person is not None):
+            person.Options()
+        else:
+            break
 
     conn.commit()
     conn.close()
