@@ -48,6 +48,9 @@ insert into users values ('u39', 'Kiyan Underwood', 'pw');
 insert into users values ('u40', 'Wendy Fernandez', 'pw');
 insert into users values ('u41', 'Shamima Gonzales', 'pw');
 insert into users values ('u42', 'Mike Smith', 'pw');
+insert into users values ('a41', 'Fake Kendrick Lamar', 'pw');
+insert into users values ('a44', 'Christina Aguilera', 'pw');
+insert into users values ('a56', 'Justin Babe', 'pw');
 
 --- Songs ---
 insert into songs values (1, 'Waka Waka(This Time For Africa)', 202);
@@ -98,144 +101,370 @@ insert into songs values (45, 'Complicated', 244);
 insert into songs values (46, 'Club Can`t Handle Me', 232);
 insert into songs values (47, 'Wannabe', 172);
 insert into songs values (48, 'Shape of You', 233);
+insert into songs values (49, 'Bad Company', 290);
+insert into songs values (50, 'Bad Blood', 211);
+insert into songs values (51, 'Peaches', 198);
 
 --- Sessions ---
-insert into sessions values ('u10', 1, '2022-09-27', '2022-09-28');
-insert into sessions values ('u20', 1, '2022-09-25', '2022-09-27');
-insert into sessions values ('u3', 2, '2022-09-24', '2022-09-25');
-insert into sessions values ('u36', 3, '2022-09-24', '2022-09-25');
-insert into sessions values ('u1', 4, '2022-09-23', '2022-09-27');
-insert into sessions values ('u32', 5, '2022-09-22', '2022-09-24');
-insert into sessions values ('u23', 5, '2022-09-22', '2022-09-23');
-insert into sessions values ('u39', 6, '2022-09-16', '2022-09-18');
-insert into sessions values ('u32', 6, '2022-09-12', '2022-09-21');
-insert into sessions values ('u10', 7, '2022-09-13', '2022-09-16');
-insert into sessions values ('u22', 8, '2022-09-12', '2022-09-14');
-insert into sessions values ('u23', 9, '2022-09-08', '2022-09-15');
-insert into sessions values ('u15', 9, '2022-09-06', '2022-09-09');
-insert into sessions values ('u17', 10, '2022-09-02', '2022-09-04');
+-- u1 Sessions
+insert into sessions values ('u1', 3, '2022-09-23 11:22:33', '2022-09-27 15:32:21');
+insert into sessions values ('u1', 2, '2022-02-23 21:17:32', '2022-02-26 22:19:13');
+insert into sessions values ('u1', 1, '2021-09-23 12:15:02', '2021-09-24 20:58:57');
 
--- August 2022
-insert into sessions values ('u3', 10, '2022-08-25', '2022-08-28');
-insert into sessions values ('u7', 10, '2022-08-20', '2022-08-23');
-insert into sessions values ('u41', 11, '2022-08-22', '2022-08-26');
+-- u2 Sessions
+insert into sessions values ('u2', 1, '2021-10-30 08:26:55', '2021-11-03 05:22:44');
 
--- July 2022
-insert into sessions values ('u32', 11, '2022-07-19', '2022-07-23');
-insert into sessions values ('u28', 11, '2022-07-01', '2022-07-05');
+-- u3 Sessions
+insert into sessions values ('u3', 2, '2022-09-24 04:55:22', '2022-09-25 09:34:48');
+insert into sessions values ('u3', 1, '2022-08-25 11:06:10', '2022-08-28 04:02:48');
 
--- June 2022
-insert into sessions values ('u9', 12, '2022-06-18', '2022-06-22');
-insert into sessions values ('u16', 13, '2022-06-16', '2020-06-18');
-insert into sessions values ('u23', 13, '2022-06-10', '2022-06-13');
+-- u4 Sessions
+insert into sessions values ('u4', 1, '2021-11-17 14:57:16', '2021-11-19 09:03:32');
 
--- May 2022
-insert into sessions values ('u26', 14, '2022-05-23', '2022-05-25');
-insert into sessions values ('u29', 14, '2022-05-27', '2022-05-31');
-insert into sessions values ('u35', 15, '2022-05-20', '2022-05-23');
-insert into sessions values ('u23', 15, '2022-05-10', '2022-05-14');
+-- u5 Sessions
+insert into sessions values ('u5', 2, '2022-02-17 00:39:33', '2022-02-20 02:52:45');
+insert into sessions values ('u5', 1, '2021-01-01 02:30:14', '2021-01-06 01:08:09');
 
--- April 2022
-insert into sessions values ('u33', 16, '2022-04-28', '2022-04-30');
-insert into sessions values ('u19', 17, '2022-04-15', '2022-04-18');
-insert into sessions values ('u8', 17, '2022-04-02', '2022-04-05');
+-- u6 Sessions
+insert into sessions values ('u6', 2, '2022-01-25 12:47:26', '2022-01-28 01:21:59');
+insert into sessions values ('u6', 1, '2021-03-30 13:54:51', '2021-04-01 06:10:09');
 
--- March 2022
-insert into sessions values ('u8', 18, '2022-03-25', '2022-03-28');
-insert into sessions values ('u14', 19, '2022-03-07', '2022-03-11');
+-- u7 Sessions
+insert into sessions values ('u7', 3, '2022-08-20 14:00:12', '2022-08-23 13:08:39');
+insert into sessions values ('u7', 2, '2021-04-25 08:38:57', '2021-04-26 05:37:06');
+insert into sessions values ('u7', 1, '2021-01-26 18:50:08', '2021-01-29 08:55:05');
 
--- February 2022
-insert into sessions values ('u1', 20, '2022-02-23', '2022-02-26');
-insert into sessions values ('u5', 20, '2022-02-17', '2022-02-20');
-insert into sessions values ('u9', 20, '2022-02-08', '2022-02-11');
-insert into sessions values ('u11', 20, '2022-02-02', '2022-02-05');
+-- u8 Sessions
+insert into sessions values ('u8', 2, '2022-04-02 01:12:19', '2022-04-05 15:35:11');
+insert into sessions values ('u8', 1, '2022-03-25 20:22:07', '2022-03-28 07:57:12');
 
--- January 2022
-insert into sessions values ('u10', 21, '2022-01-28', '2022-01-31');
-insert into sessions values ('u6', 21, '2022-01-25', '2022-01-28');
-insert into sessions values ('u9', 21, '2022-01-22', '2022-01-25');
-insert into sessions values ('u13', 22, '2022-01-19', '2022-01-21');
+-- u9 Sessions
+insert into sessions values ('u9', 3, '2022-06-18 10:47:54', '2022-06-22 05:41:23');
+insert into sessions values ('u9', 2, '2022-02-08 11:44:32', '2022-02-11 06:02:40');
+insert into sessions values ('u9', 1, '2022-01-22 04:40:16', '2022-01-25 15:14:17');
 
--- December 2021
-insert into sessions values ('u19', 22, '2021-12-31', '2022-01-02');
-insert into sessions values ('u17', 22, '2021-12-20', '2021-12-25');
-insert into sessions values ('u27', 22, '2021-12-16', '2021-12-20');
+-- u10 Sessions
+insert into sessions values ('u10', 3, '2022-09-27 16:28:03', '2022-09-28 13:11:57');
+insert into sessions values ('u10', 2, '2022-09-13 07:47:34', '2022-09-16 00:59:59');
+insert into sessions values ('u10', 1, '2022-01-28 03:45:23', '2022-01-31 20:01:36');
 
--- November 2021
-insert into sessions values ('u11', 23, '2021-11-18', '2021-11-22');
-insert into sessions values ('u4', 23, '2021-11-17', '2021-11-19');
-insert into sessions values ('u42', 23, '2021-11-16', '2021-11-18');
+-- u11 Sessions
+insert into sessions values ('u11', 3, '2022-02-02 01:58:33', '2022-02-05 04:58:30');
+insert into sessions values ('u11', 2, '2021-11-18 05:12:23', '2021-11-22 12:13:07');
+insert into sessions values ('u11', 1, '2021-10-27 02:18:53', '2021-10-30 15:24:27');
 
--- October 2021
-insert into sessions values ('u2', 24, '2021-10-30', '2021-11-03');
-insert into sessions values ('u11', 24, '2021-10-27', '2021-10-30');
-insert into sessions values ('u38', 24, '2021-10-24', '2021-10-27');
+-- u12 Sessions
+insert into sessions values ('u12', 2, '2021-08-31 06:20:32', '2021-09-02 11:25:08');
+insert into sessions values ('u12', 1, '2021-02-19 05:46:30', '2021-02-25 06:08:37');
 
--- September 2021
-insert into sessions values ('u37', 25, '2021-09-30', '2021-10-02');
-insert into sessions values ('u30', 25, '2021-09-26', '2021-09-29');
-insert into sessions values ('u18', 25, '2021-09-23', '2021-09-25');
-insert into sessions values ('u1', 25, '2021-09-23', '2021-09-24');
-insert into sessions values ('u25', 26, '2021-09-15', '2021-09-19');
-insert into sessions values ('u24', 26, '2021-09-10', '2021-09-14');
-insert into sessions values ('u39', 26, '2021-09-06', '2021-09-10');
+-- u13 Sessions
+insert into sessions values ('u13', 2, '2022-01-19 14:36:54', '2022-01-21 17:42:44');
+insert into sessions values ('u13', 1, '2021-06-24 20:23:14', '2021-06-28 00:23:34');
 
--- August 2021 
-insert into sessions values ('u12', 27, '2021-08-31', '2021-09-02');
-insert into sessions values ('u26', 27, '2021-08-25', '2021-08-28');
-insert into sessions values ('u40', 27, '2021-08-23', '2021-08-25');
-insert into sessions values ('u21', 27, '2021-08-15', '2021-08-18');
+-- u14 Sessions
+insert into sessions values ('u14', 2, '2022-03-07 21:22:49', '2022-03-11 08:04:02');
+insert into sessions values ('u14', 1, '2021-04-19 22:00:25', '2021-04-23 07:24:14');
 
--- July 2021
-insert into sessions values ('u42', 28, '2021-07-29', '2021-07-31');
-insert into sessions values ('u34', 29, '2021-07-15', '2021-07-20');
-insert into sessions values ('u31', 29, '2021-07-12', '2021-07-13');
+-- u15 Sessions
+insert into sessions values ('u15', 1, '2022-09-06 00:59:13', '2022-09-09 18:51:12');
 
--- June 2021 
-insert into sessions values ('u13', 30, '2021-06-24', '2021-06-28');
+-- u16 Sessions
+insert into sessions values ('u16', 2, '2022-06-16 17:30:13', '2020-06-18 21:40:57');
+insert into sessions values ('u16', 1, '2021-04-15 19:33:20', '2021-04-17 10:19:00');
 
--- May 2021
-insert into sessions values ('u18', 31, '2021-05-30', '2021-06-01');
-insert into sessions values ('u18', 32, '2021-05-23', '2021-05-26');
-insert into sessions values ('u19', 32, '2021-05-18', '2021-05-21');
+-- u17 Sessions
+insert into sessions values ('u17', 3, '2022-09-02 16:15:53', '2022-09-04 14:17:38');
+insert into sessions values ('u17', 2, '2021-12-20 19:00:05', '2021-12-25 14:45:47');
+insert into sessions values ('u17', 1, '2021-03-27 19:09:55', '2021-03-28 04:58:00'); 
 
--- April 2021
-insert into sessions values ('u41', 33, '2021-04-28', '2021-04-30');
-insert into sessions values ('u7', 33, '2021-04-25', '2021-04-26');
-insert into sessions values ('u14', 33, '2021-04-19', '2021-04-23');
-insert into sessions values ('u16', 34, '2021-04-15', '2021-04-17');
+-- u18 Sessions
+insert into sessions values ('u18', 3, '2021-09-23 15:53:44', '2021-09-25 07:16:55');
+insert into sessions values ('u18', 2, '2021-05-30 06:13:01', '2021-06-01 16:59:23');
+insert into sessions values ('u18', 1, '2021-05-23 06:53:35', '2021-05-26 06:34:09');
 
--- March 2021
-insert into sessions values ('u6', 35, '2021-03-30', '2021-04-01');
-insert into sessions values ('u17', 35, '2021-03-27', '2021-03-28'); 
-insert into sessions values ('u24', 36, '2021-03-24', '2021-03-26');
-insert into sessions values ('u22', 36, '2021-03-21', '2021-03-24');
+-- u19 Sessions
+insert into sessions values ('u19', 3, '2022-04-15 09:19:14', '2022-04-18 15:46:10');
+insert into sessions values ('u19', 2, '2021-12-31 13:18:02', '2022-01-02 19:21:51');
+insert into sessions values ('u19', 1, '2021-05-18 21:12:02', '2021-05-21 07:51:05');
 
--- February 2021
-insert into sessions values ('u29', 37, '2021-02-28', '2021-03-02');
-insert into sessions values ('u37', 37, '2021-02-25', '2021-02-26');
-insert into sessions values ('u12', 38, '2021-02-19', '2021-02-25');
-insert into sessions values ('u38', 38, '2021-02-15', '2021-02-18');
+-- u20 Sessions
+insert into sessions values ('u20', 1, '2022-09-25 19:43:23', '2022-09-27 01:23:34');
 
--- January 2021
-insert into sessions values ('u7', 39, '2021-01-26', '2021-01-29');
-insert into sessions values ('u25', 39, '2021-01-23', '2021-01-25');
-insert into sessions values ('u32', 39, '2021-01-23', '2021-01-25');
-insert into sessions values ('u42', 40, '2021-01-15', '2021-01-18');
-insert into sessions values ('u5', 40, '2021-01-01', '2021-01-06');
+-- u21 Sessions
+insert into sessions values ('u21', 1, '2021-08-15 16:27:02', '2021-08-18 07:18:06');
+
+-- u22 Sessions
+insert into sessions values ('u22', 2, '2022-09-12 23:58:09', '2022-09-14 02:26:32');
+insert into sessions values ('u22', 1, '2021-03-21 04:05:55', '2021-03-24 18:37:27');
+
+-- u23 Sessions
+insert into sessions values ('u23', 4, '2022-09-22 20:33:54', '2022-09-23 03:01:08');
+insert into sessions values ('u23', 3, '2022-09-08 09:33:46', '2022-09-15 21:11:13');
+insert into sessions values ('u23', 2, '2022-06-10 11:00:27', '2022-06-13 12:42:59');
+insert into sessions values ('u23', 1, '2022-05-10 03:59:44', '2022-05-14 21:42:02');
+
+-- u24 Sessions
+insert into sessions values ('u24', 2, '2021-09-10 16:11:45', '2021-09-14 08:22:57');
+insert into sessions values ('u24', 1, '2021-03-24 03:45:32', '2021-03-26 23:47:17');
+
+-- u25 Sessions
+insert into sessions values ('u25', 2, '2021-09-15 07:15:04', '2021-09-19 12:38:48');
+insert into sessions values ('u25', 1, '2021-01-23 05:09:11', '2021-01-25 04:03:27');
+
+-- u26 Sessions
+insert into sessions values ('u26', 2, '2022-05-23 19:08:07', '2022-05-25 13:32:56');
+insert into sessions values ('u26', 1, '2021-08-25 20:07:17', '2021-08-28 01:09:57');
+
+-- u27 Sessions
+insert into sessions values ('u27', 1, '2021-12-16 12:13:22', '2021-12-20 14:21:46');
+
+-- u28 Sessions
+insert into sessions values ('u28', 30, '2022-07-01 16:08:41', '2022-07-05 07:07:14');
+
+-- u29 Sessions
+insert into sessions values ('u29', 2, '2022-05-27 00:40:44', '2022-05-31 19:13:18');
+insert into sessions values ('u29', 1, '2021-02-28 11:23:21', '2021-03-02 00:24:51');
+
+-- u30 Sessions
+insert into sessions values ('u30', 1, '2021-09-26 06:33:27', '2021-09-29 10:21:23');
+
+-- u31 Sessions
+insert into sessions values ('u31', 1, '2021-07-12 13:14:14', '2021-07-13 04:36:13');
+
+-- u32 Sessions
+insert into sessions values ('u32', 4, '2022-09-22 13:45:51', '2022-09-24 17:54:20');
+insert into sessions values ('u32', 3, '2022-09-12 09:55:40', '2022-09-21 22:22:22');
+insert into sessions values ('u32', 2, '2022-07-19 23:24:19', '2022-07-23 07:48:39');
+insert into sessions values ('u32', 1, '2021-01-23 17:51:27', '2021-01-25 16:17:40');
+
+-- u33 Sessions
+insert into sessions values ('u33', 1, '2022-04-28 13:22:19', '2022-04-30 03:45:01');
+
+-- u34 Sessions
+insert into sessions values ('u34', 1, '2021-07-15 06:37:33', '2021-07-20 01:20:32');
+
+-- u35 Sessions
+insert into sessions values ('u35', 1, '2022-05-20 13:09:07', '2022-05-23 18:39:20');
+
+-- u36 Sessions
+insert into sessions values ('u36', 1, '2022-09-24 10:11:22', '2022-09-25 23:23:41');
+
+-- u37 Sessions
+insert into sessions values ('u37', 2, '2021-09-30 21:25:51', '2021-10-02 15:26:35');
+insert into sessions values ('u37', 1, '2021-02-25 15:04:09', '2021-02-26 13:39:36');
+
+-- u38 Sessions
+insert into sessions values ('u38', 2, '2021-10-24 10:35:31', '2021-10-27 19:11:40');
+insert into sessions values ('u38', 1, '2021-02-15 20:16:18', '2021-02-18 22:31:58');
+
+-- u39 Sessions
+insert into sessions values ('u39', 2, '2022-09-16 08:44:43', '2022-09-18 05:41:21');
+insert into sessions values ('u39', 1, '2021-09-06 23:56:55', '2021-09-10 09:13:00');
+
+-- u40 Sessions
+insert into sessions values ('u40', 1, '2021-08-23 21:05:04', '2021-08-25 23:58:07');
+
+-- u41 Sessions
+insert into sessions values ('u41', 2, '2022-08-22 05:55:17', '2022-08-26 09:15:45');
+insert into sessions values ('u41', 1, '2021-04-28 18:13:22', '2021-04-30 20:12:41');
+
+-- u42 Sessions
+insert into sessions values ('u42', 3, '2021-11-16 04:51:52', '2021-11-18 17:29:55');
+insert into sessions values ('u42', 2, '2021-07-29 22:00:21', '2021-07-31 14:27:04');
+insert into sessions values ('u42', 1, '2021-01-15 18:20:14', '2021-01-18 13:27:51');
 
 --- Listen ---
--- insert into listen values ('u1', 1, 5, 1.2);
--- insert into listen values ('u2', 2, 11, 2.0);
--- insert into listen values ('u3', 3, 40, 33);
+-- u1 Sessions 
+insert into listen values ('u1', 3, 2, 3);
+insert into listen values ('u1', 3, 12, 5);
+insert into listen values ('u1', 3, 16, 4);
+insert into listen values ('u1', 2, 20, 20);
+insert into listen values ('u1', 2, 21, 23);
+insert into listen values ('u1', 2, 6, 18);
+insert into listen values ('u1', 1, 44, 63.9);
+insert into listen values ('u1', 1, 17, 33.8);
+insert into listen values ('u1', 1, 23, 26.5);
+insert into listen values ('u1', 1, 29, 39.5);
 
--- Session 1 (11 unique songs)
-insert into listen values ('u10', 1, 5, 1.2);
-insert into listen values ('u10', 1, 11, 2.0);
-insert into listen values ('u10', 1, 40, 33);
-insert into listen values ('u10', 1, 25, 14);
-insert into listen values ('u10', 1, 13, 22);
-insert into listen values ('u10', 1, 35, 21);
+-- u2 Sessions
+insert into listen values ('u2', 1, 1, 5);
+insert into listen values ('u2', 1, 8, 8.4);
+insert into listen values ('u2', 1, 12, 3.3);
+insert into listen values ('u2', 1, 17, 125.4);
+insert into listen values ('u2', 1, 2, 63.8);
+insert into listen values ('u2', 1, 7, 34.2);
+insert into listen values ('u2', 1, 36, 12.7);
+insert into listen values ('u2', 1, 37, 19.5);
+insert into listen values ('u2', 1, 35, 10.7);
+
+-- u3 Sessions
+insert into listen values ('u3', 2, 42, 9.7);
+insert into listen values ('u3', 2, 30, 11.8);
+insert into listen values ('u3', 2, 14, 23.4);
+insert into listen values ('u3', 2, 10, 33.2);
+insert into listen values ('u3', 1, 16, 0.5);
+insert into listen values ('u3', 1, 30, 14.7);
+insert into listen values ('u3', 1, 38, 6.7);
+insert into listen values ('u3', 1, 23, 14.4);
+insert into listen values ('u3', 1, 42, 15.6);
+
+-- u4 Sessions
+insert into listen values ('u4', 1, 29, 10);
+insert into listen values ('u4', 1, 11, 20);
+insert into listen values ('u4', 1, 51, 9);
+
+-- u5 Sessions
+insert into listen values ('u5', 1, 3, 10);
+insert into listen values ('u5', 1, 4, 111);
+insert into listen values ('u5', 1, 38, 12.23);
+insert into listen values ('u5', 1, 6, 23.35);
+
+-- u6 Sessions
+insert into listen values ('u6', 2, 43, 10);
+insert into listen values ('u6', 2, 4, 6);
+insert into listen values ('u6', 2, 5, 11);
+insert into listen values ('u6', 2, 40, 22);
+insert into listen values ('u6', 1, 32, 12.5);
+insert into listen values ('u6', 1, 11, 11.29);
+
+-- u7 Sessions
+insert into listen values ('u7', 3, 38, 4.4);
+insert into listen values ('u7', 3, 23, 14.2);
+insert into listen values ('u7', 3, 27, 39);
+insert into listen values ('u7', 3, 42, 22);
+insert into listen values ('u7', 2, 15, 32.2);
+insert into listen values ('u7', 2, 37, 28.44);
+insert into listen values ('u7', 2, 4, 251);
+insert into listen values ('u7', 1, 4, 251);
+
+-- u8 Sessions
+insert into listen values ('u8', 2, 20, 12.2);
+insert into listen values ('u8', 2, 3, 62.3);
+insert into listen values ('u8', 2, 31, 2.3);
+insert into listen values ('u8', 2, 38, 5.5);
+insert into listen values ('u8', 2, 40, 4.5);
+insert into listen values ('u8', 2, 26, 12);
+insert into listen values ('u8', 2, 24, 8.8);
+insert into listen values ('u8', 2, 39, 10);
+insert into listen values ('u8', 1, 24, 3.3);
+insert into listen values ('u8', 1, 38, 12.5);
+
+-- u9 Sessions
+insert into listen values ('u9', 3, 43, 44.3);
+insert into listen values ('u9', 3, 26, 25);
+insert into listen values ('u9', 3, 16, 29);
+insert into listen values ('u9', 3, 36, 25);
+insert into listen values ('u9', 3, 21, 20);
+insert into listen values ('u9', 3, 37, 22);
+insert into listen values ('u9', 3, 41, 22);
+insert into listen values ('u9', 1, 40, 12);
+insert into listen values ('u9', 1, 5, 6);
+insert into listen values ('u9', 1, 43, 5);
+
+-- u10 Sessions
+insert into listen values ('u10', 3, 5, 1.2);
+insert into listen values ('u10', 3, 11, 2.0);
+insert into listen values ('u10', 3, 40, 33);
+insert into listen values ('u10', 3, 25, 14);
+insert into listen values ('u10', 3, 13, 22);
+insert into listen values ('u10', 3, 35, 21);
+insert into listen values ('u10', 2, 13, 22);
+insert into listen values ('u10', 2, 25, 10);
+insert into listen values ('u10', 2, 42, 23.3);
+insert into listen values ('u10', 2, 33, 32.5);
+insert into listen values ('u10', 1, 25, 9);
+insert into listen values ('u10', 1, 13, 0.9);
+insert into listen values ('u10', 1, 40, 12);
+
+-- u11 Sessions
+insert into listen values ('u11', 2, 11, 21.5);
+insert into listen values ('u11', 2, 29, 44);
+insert into listen values ('u11', 1, 2, 13.4);
+insert into listen values ('u11', 1, 43, 102.2);
+insert into listen values ('u11', 1, 9, 9);
+insert into listen values ('u11', 1, 8, 14.5);
+insert into listen values ('u11', 1, 22, 22);
+
+-- u12 Sessions
+insert into listen values ('u12', 2, 41, 32);
+insert into listen values ('u12', 2, 23, 5);
+insert into listen values ('u12', 2, 10, 29);
+insert into listen values ('u12', 2, 16, 5);
+insert into listen values ('u12', 1, 25, 32.55);
+insert into listen values ('u12', 1, 40, 281);
+
+-- u13 Sessions
+insert into listen values ('u13', 2, 40, 4);
+insert into listen values ('u13', 2, 5, 5);
+insert into listen values ('u13', 1, 14, 5.6);
+insert into listen values ('u13', 1, 4, 6.7);
+insert into listen values ('u13', 1, 6, 5);
+insert into listen values ('u13', 1, 27, 30);
+insert into listen values ('u13', 1, 47, 16);
+
+-- u14 Sessions
+insert into listen values ('u14', 2, 32, 5.5);
+insert into listen values ('u14', 2, 35, 5.5);
+insert into listen values ('u14', 2, 29, 5.5);
+insert into listen values ('u14', 2, 16, 5.5);
+insert into listen values ('u14', 2, 17, 3.1);
+insert into listen values ('u14', 2, 34, 2.4);
+insert into listen values ('u14', 2, 23, 5.5);
+insert into listen values ('u14', 1, 15, 98.34);
+insert into listen values ('u14', 1, 37, 46.65);
+insert into listen values ('u14', 1, 51, 32);
+
+-- u15 Sessions
+insert into listen values ('u15', 1, 42, 29.9);
+insert into listen values ('u15', 1, 32, 10.3);
+insert into listen values ('u15', 1, 22, 15);
+insert into listen values ('u15', 1, 49, 51);
+
+-- u16 Sessions
+insert into listen values ('u16', 2, 41, 33);
+insert into listen values ('u16', 2, 36, 12);
+insert into listen values ('u16', 2, 21, 21);
+insert into listen values ('u16', 2, 37, 23);
+insert into listen values ('u16', 2, 51, 16);
+insert into listen values ('u16', 1, 26, 37.32);
+insert into listen values ('u16', 1, 37, 15.89);
+insert into listen values ('u16', 1, 15, 18.99);
+insert into listen values ('u16', 1, 47, 16);
+insert into listen values ('u16', 1, 51, 15.9);
+
+-- u17 Sessions
+insert into listen values ('u17', 3, 30, 10.3);
+insert into listen values ('u17', 3, 50, 13.3);
+insert into listen values ('u17', 2, 18, 5);
+insert into listen values ('u17', 2, 34, 6);
+insert into listen values ('u17', 2, 17, 4);
+insert into listen values ('u17', 2, 20, 6);
+insert into listen values ('u17', 2, 21, 8);
+insert into listen values ('u17', 2, 16, 5.4);
+insert into listen values ('u17', 1, 15, 11.83);
+insert into listen values ('u17', 1, 32, 101.22);
+insert into listen values ('u17', 1, 11, 182.38);
+
+-- u18 Sessions
+insert into listen values ('u18', 3, 1, 12.7);
+insert into listen values ('u18', 3, 26, 26.8);
+insert into listen values ('u18', 3, 17, 23.4);
+insert into listen values ('u18', 3, 21, 32);
+insert into listen values ('u18', 2, 32, 43.2);
+insert into listen values ('u18', 2, 26, 129.5);
+insert into listen values ('u18', 1, 26, 45.7);
+insert into listen values ('u18', 1, 24, 24.6);
+
+-- u19 Sessions
+insert into listen values ('u19', 3, 32, 9.9);
+insert into listen values ('u19', 3, 5, 10);
+insert into listen values ('u19', 3, 20, 10.1);
+insert into listen values ('u19', 3, 19, 15);
+insert into listen values ('u19', 3, 14, 8);
+insert into listen values ('u19', 1, 24, 34.2);
+insert into listen values ('u19', 1, 26, 45);
+
+-- u20 Sessions
 insert into listen values ('u20', 1, 23, 3.2);
 insert into listen values ('u20', 1, 12, 45);
 insert into listen values ('u20', 1, 43, 32);
@@ -243,372 +472,192 @@ insert into listen values ('u20', 1, 5, 44);
 insert into listen values ('u20', 1, 6, 32);
 insert into listen values ('u20', 1, 42, 0.9);
 
--- Session 2 (4 unique songs)
-insert into listen values ('u3', 2, 42, 9.7);
-insert into listen values ('u3', 2, 30, 11.8);
-insert into listen values ('u3', 2, 14, 23.4);
-insert into listen values ('u3', 2, 10, 33.2);
+-- u21 Sessions
+insert into listen values ('u21', 1, 41, 45.2);
+insert into listen values ('u21', 1, 16, 32.6);
+insert into listen values ('u21', 1, 32, 5.3);
+insert into listen values ('u21', 1, 51, 41);
 
--- Session 3 (3 unique songs)
-insert into listen values ('u36', 3, 25, 1000);
-insert into listen values ('u36', 3, 42, 53.6);
-insert into listen values ('u36', 3, 9, 43);
+-- u22 Sessions
+insert into listen values ('u22', 2, 40, 23.1);
+insert into listen values ('u22', 2, 50, 14.01);
+insert into listen values ('u22', 1, 42, 83.46);
+insert into listen values ('u22', 1, 11, 29.99);
+insert into listen values ('u22', 1, 15, 12.43);
+insert into listen values ('u22', 1, 32, 111.11);
 
--- Session 4 (3 unique songs)
-insert into listen values ('u1', 4, 2, 3);
-insert into listen values ('u1', 4, 12, 5);
-insert into listen values ('u1', 4, 16, 4);
+-- u23 Sessions
+insert into listen values ('u23', 4, 45, 70.3);
+insert into listen values ('u23', 4, 33, 67.5);
+insert into listen values ('u23', 4, 15, 81);
+insert into listen values ('u23', 4, 50, 8);
+insert into listen values ('u23', 3, 43, 32);
+insert into listen values ('u23', 3, 31, 29);
+insert into listen values ('u23', 3, 50, 4);
+insert into listen values ('u23', 2, 50, 1);
+insert into listen values ('u23', 2, 3, 10.4);
+insert into listen values ('u23', 2, 10, 105.7);
+insert into listen values ('u23', 2, 21, 12);
+insert into listen values ('u23', 2, 36, 11);
+insert into listen values ('u23', 2, 37, 20);
+insert into listen values ('u23', 2, 41, 11);
+insert into listen values ('u23', 1, 1, 15);
+insert into listen values ('u23', 1, 50, 1);
+insert into listen values ('u23', 1, 8, 4.9);
+insert into listen values ('u23', 1, 44, 23);
+insert into listen values ('u23', 1, 19, 19);
+insert into listen values ('u23', 1, 3, 5);
 
--- Session 5 (7 unique songs)
-insert into listen values ('u23', 5, 45, 70.3);
-insert into listen values ('u23', 5, 33, 67.5);
-insert into listen values ('u23', 5, 15, 81);
-insert into listen values ('u32', 5, 42, 4.3);
-insert into listen values ('u32', 5, 27, 5.5);
-insert into listen values ('u32', 5, 16, 6.4);
-insert into listen values ('u32', 5, 5, 4.4);
+-- u24 Sessions
+insert into listen values ('u24', 2, 44, 39.2);
+insert into listen values ('u24', 2, 17, 54.8);
+insert into listen values ('u24', 2, 35, 30.4);
+insert into listen values ('u24', 2, 36, 23.6);
+insert into listen values ('u24', 2, 28, 55.5);
+insert into listen values ('u24', 1, 42, 23.5);
+insert into listen values ('u24', 1, 11, 32.5);
+insert into listen values ('u24', 1, 15, 23.55);
+insert into listen values ('u24', 1, 32, 21.3);
 
--- Session 6 (9 unique songs)
-insert into listen values ('u32', 6, 20, 123);
-insert into listen values ('u32', 6, 42, 11.2);
-insert into listen values ('u32', 6, 5, 7.6);
-insert into listen values ('u39', 6, 29, 2.5);
-insert into listen values ('u39', 6, 12, 43);
-insert into listen values ('u39', 6, 6, 6);
-insert into listen values ('u39', 6, 34, 31);
-insert into listen values ('u39', 6, 11, 43);
-insert into listen values ('u39', 6, 7, 6);
+-- u25 Sessions
+insert into listen values ('u25', 2, 44, 32.6);
+insert into listen values ('u25', 2, 17, 40.5);
+insert into listen values ('u25', 2, 6, 6.5);
+insert into listen values ('u25', 2, 10, 10.9);
+insert into listen values ('u25', 2, 18, 23);
+insert into listen values ('u25', 1, 4, 345.32);
 
--- Session 7 (4 unique songs)
-insert into listen values ('u10', 7, 13, 22);
-insert into listen values ('u10', 7, 25, 10);
-insert into listen values ('u10', 7, 42, 23.3);
-insert into listen values ('u10', 7, 33, 32.5);
+-- u26 Sessions
+insert into listen values ('u26', 2, 44, 32.2);
+insert into listen values ('u26', 2, 34, 22);
+insert into listen values ('u26', 2, 26, 20);
+insert into listen values ('u26', 1, 16, 5);
+insert into listen values ('u26', 1, 18, 5.6);
+insert into listen values ('u26', 1, 41, 23.2);
 
--- Session 8 (1 unique song)
-insert into listen values ('u22', 8, 40, 23.1);
+-- u27 Sessions
+insert into listen values ('u27', 1, 9, 32);
+insert into listen values ('u27', 1, 7, 21);
+insert into listen values ('u27', 1, 14, 6);
 
--- Session 9 (5 unique songs)
-insert into listen values ('u15', 9, 42, 29.9);
-insert into listen values ('u15', 9, 32, 10.3);
-insert into listen values ('u23', 9, 43, 32);
-insert into listen values ('u23', 9, 31, 29);
-insert into listen values ('u15', 9, 22, 15);
+-- u28 Sessions
 
--- Session 10 (6 unique songs)
-insert into listen values ('u3', 10, 16, 0.5);
-insert into listen values ('u3', 10, 30, 14.7);
-insert into listen values ('u17', 10, 30, 10.3);
+-- u29 Sessions
+insert into listen values ('u29', 2, 45, 8.5);
+insert into listen values ('u29', 2, 44, 23);
+insert into listen values ('u29', 2, 23, 33);
+insert into listen values ('u29', 2, 7, 7);
+insert into listen values ('u29', 2, 8, 5);
+insert into listen values ('u29', 1, 39, 12.97);
+insert into listen values ('u29', 1, 12, 12.77);
+insert into listen values ('u29', 1, 40, 49);
 
--- August 2022 --
-insert into listen values ('u7', 10, 38, 4.4);
-insert into listen values ('u7', 10, 23, 14.2);
-insert into listen values ('u7', 10, 27, 39);
-insert into listen values ('u7', 10, 42, 22);
-insert into listen values ('u3', 10, 38, 6.7);
-insert into listen values ('u3', 10, 23, 14.4);
-insert into listen values ('u3', 10, 42, 15.6);
+-- u30 Sessions
+insert into listen values ('u30', 1, 17, 20);
+insert into listen values ('u30', 1, 44, 19.3);
+insert into listen values ('u30', 1, 34, 43);
+insert into listen values ('u30', 1, 5, 5);
+insert into listen values ('u30', 1, 29, 11);
 
--- Session 11 (3 unique songs)
-insert into listen values ('u41', 11, 36, 22.6);
-insert into listen values ('u41', 11, 41, 0.3);
-insert into listen values ('u41', 11, 38, 5);
+-- u31 Sessions
+insert into listen values ('u31', 1, 33, 15.6);
+insert into listen values ('u31', 1, 8, 4.3);
+insert into listen values ('u31', 1, 15, 3.5);
 
--- June 2022 --
--- Session 12 (7 unique songs)
-insert into listen values ('u9', 12, 43, 44.3);
-insert into listen values ('u9', 12, 26, 25);
-insert into listen values ('u9', 12, 16, 29);
-insert into listen values ('u9', 12, 36, 25);
-insert into listen values ('u9', 12, 21, 20);
-insert into listen values ('u9', 12, 37, 22);
-insert into listen values ('u9', 12, 41, 22);
+-- u32 Sessions
+insert into listen values ('u32', 4, 42, 4.3);
+insert into listen values ('u32', 4, 27, 5.5);
+insert into listen values ('u32', 4, 16, 6.4);
+insert into listen values ('u32', 4, 5, 4.4);
+insert into listen values ('u32', 3, 20, 123);
+insert into listen values ('u32', 3, 42, 11.2);
+insert into listen values ('u32', 3, 5, 7.6);
+insert into listen values ('u32', 1, 4, 501);
 
--- Session 13 (6 unique songs)
-insert into listen values ('u16', 13, 41, 33);
-insert into listen values ('u16', 13, 36, 12);
-insert into listen values ('u16', 13, 21, 21);
-insert into listen values ('u16', 13, 37, 23);
-insert into listen values ('u23', 13, 3, 10.4);
-insert into listen values ('u23', 13, 10, 105.7);
-insert into listen values ('u23', 13, 21, 12);
-insert into listen values ('u23', 13, 36, 11);
-insert into listen values ('u23', 13, 37, 20);
-insert into listen values ('u23', 13, 41, 11);
+-- u33 Sessions
+insert into listen values ('u33', 1, 5, 11);
+insert into listen values ('u33', 1, 44, 5.5);
+insert into listen values ('u33', 1, 20, 11);
 
--- May 2022 --
--- Session 14 (7 unique songs)
-insert into listen values ('u26', 14, 44, 32.2);
-insert into listen values ('u26', 14, 34, 22);
-insert into listen values ('u26', 14, 26, 20);
-insert into listen values ('u29', 14, 45, 8.5);
-insert into listen values ('u29', 14, 44, 23);
-insert into listen values ('u29', 14, 23, 33);
-insert into listen values ('u29', 14, 7, 7);
-insert into listen values ('u29', 14, 8, 5);
+-- u34 Sessions
+insert into listen values ('u34', 1, 8, 5.1);
+insert into listen values ('u34', 1, 9, 9.7);
+insert into listen values ('u34', 1, 33, 21.4);
+insert into listen values ('u34', 1, 50, 33.5);
 
--- Session 15 (10 unique songs)
-insert into listen values ('u35', 15, 45, 54);
-insert into listen values ('u35', 15, 32, 29);
-insert into listen values ('u35', 15, 44, 20);
-insert into listen values ('u35', 15, 5, 5.3);
-insert into listen values ('u35', 15, 4, 32);
-insert into listen values ('u23', 15, 1, 15);
-insert into listen values ('u23', 15, 8, 4.9);
-insert into listen values ('u23', 15, 44, 23);
-insert into listen values ('u23', 15, 19, 19);
-insert into listen values ('u23', 15, 3, 5);
+-- u35 Sessions
+insert into listen values ('u35', 1, 45, 54);
+insert into listen values ('u35', 1, 32, 29);
+insert into listen values ('u35', 1, 44, 20);
+insert into listen values ('u35', 1, 5, 5.3);
+insert into listen values ('u35', 1, 4, 32);
 
--- April 2022 --
--- Session 16 (3 unique songs)
-insert into listen values ('u33', 16, 5, 11);
-insert into listen values ('u33', 16, 44, 5.5);
-insert into listen values ('u33', 16, 20, 11);
+-- u36 Sessions
+insert into listen values ('u36', 1, 25, 1000);
+insert into listen values ('u36', 1, 42, 53.6);
+insert into listen values ('u36', 1, 9, 43);
 
--- Session 17 (12 unique songs)
-insert into listen values ('u19', 17, 32, 9.9);
-insert into listen values ('u19', 17, 5, 10);
-insert into listen values ('u19', 17, 20, 10.1);
-insert into listen values ('u19', 17, 19, 15);
-insert into listen values ('u19', 17, 14, 8);
-insert into listen values ('u8', 17, 20, 12.2);
-insert into listen values ('u8', 17, 3, 62.3);
-insert into listen values ('u8', 17, 31, 2.3);
-insert into listen values ('u8', 17, 38, 5.5);
-insert into listen values ('u8', 17, 40, 4.5);
-insert into listen values ('u8', 17, 26, 12);
-insert into listen values ('u8', 17, 24, 8.8);
-insert into listen values ('u8', 17, 39, 10);
+-- u37 Sessions
+insert into listen values ('u37', 2, 25, 2.6);
+insert into listen values ('u37', 2, 35, 10.6);
+insert into listen values ('u37', 2, 17, 39.4);
+insert into listen values ('u37', 2, 51, 23.3);
+insert into listen values ('u37', 2, 31, 19.2);
+insert into listen values ('u37', 2, 29, 18);
+insert into listen values ('u37', 2, 28, 19);
+insert into listen values ('u37', 1, 36, 125);
+insert into listen values ('u37', 1, 12, 33.36);
 
--- March 2022 --
--- Session 18 (2 unique songs)
-insert into listen values ('u8', 18, 24, 3.3);
-insert into listen values ('u8', 18, 38, 12.5);
+-- u38 Sessions
+insert into listen values ('u38', 2, 19, 6);
+insert into listen values ('u38', 2, 33, 19.3);
+insert into listen values ('u38', 2, 2, 10.5);
+insert into listen values ('u38', 2, 8, 20.4);
+insert into listen values ('u38', 2, 50, 33.4);
+insert into listen values ('u38', 2, 49, 23);
+insert into listen values ('u38', 1, 25, 286.21);
+insert into listen values ('u38', 1, 51, 59.3);
+insert into listen values ('u38', 1, 49, 22);
 
--- Session 19 (7 unique songs)
-insert into listen values ('u14', 19, 32, 5.5);
-insert into listen values ('u14', 19, 35, 5.5);
-insert into listen values ('u14', 19, 29, 5.5);
-insert into listen values ('u14', 19, 16, 5.5);
-insert into listen values ('u14', 19, 17, 3.1);
-insert into listen values ('u14', 19, 34, 2.4);
-insert into listen values ('u14', 19, 23, 5.5);
+-- u39 Sessions
+insert into listen values ('u39', 2, 29, 2.5);
+insert into listen values ('u39', 2, 12, 43);
+insert into listen values ('u39', 2, 6, 6);
+insert into listen values ('u39', 2, 34, 31);
+insert into listen values ('u39', 2, 11, 43);
+insert into listen values ('u39', 2, 7, 6);
+insert into listen values ('u39', 1, 44, 26.8);
+insert into listen values ('u39', 1, 17, 17.9);
+insert into listen values ('u39', 1, 29, 43.7);
+insert into listen values ('u39', 1, 28, 71.4);
+insert into listen values ('u39', 1, 27, 55);
 
--- February 2022 --
--- Session 20 (3 unique songs)
-insert into listen values ('u1', 20, 20, 20);
-insert into listen values ('u1', 20, 21, 23);
-insert into listen values ('u1', 20, 6, 18);
+-- u40 Sessions
+insert into listen values ('u40', 1, 17, 32);
+insert into listen values ('u40', 1, 23, 12);
+insert into listen values ('u40', 1, 7, 12.5);
+insert into listen values ('u40', 1, 49, 46);
 
--- January 2022 --
--- Session 21 (6 unique songs)
-insert into listen values ('u10', 21, 25, 9);
-insert into listen values ('u10', 21, 13, 0.9);
-insert into listen values ('u10', 21, 40, 12);
-insert into listen values ('u6', 21, 43, 10);
-insert into listen values ('u6', 21, 4, 6);
-insert into listen values ('u6', 21, 5, 11);
-insert into listen values ('u6', 21, 40, 22);
-insert into listen values ('u9', 21, 40, 12);
-insert into listen values ('u9', 21, 5, 6);
-insert into listen values ('u9', 21, 43, 5);
+-- u41 Sessions
+insert into listen values ('u41', 2, 36, 22.6);
+insert into listen values ('u41', 2, 41, 0.3);
+insert into listen values ('u41', 2, 38, 5);
+insert into listen values ('u41', 1, 37, 43.2);
+insert into listen values ('u41', 1, 15, 32);
 
--- December 2021 --
--- Session 22 (10 unique songs)
-insert into listen values ('u13', 22, 40, 4);
-insert into listen values ('u13', 22, 5, 5);
-insert into listen values ('u17', 22, 18, 5);
-insert into listen values ('u17', 22, 34, 6);
-insert into listen values ('u17', 22, 17, 4);
-insert into listen values ('u17', 22, 20, 6);
-insert into listen values ('u17', 22, 21, 8);
-insert into listen values ('u17', 22, 16, 5.4);
-insert into listen values ('u27', 22, 9, 32);
-insert into listen values ('u27', 22, 7, 21);
-insert into listen values ('u27', 22, 14, 6);
-
--- November 2021 --
--- Session 23 (2 unique songs)
-insert into listen values ('u11', 23, 11, 21.5);
-insert into listen values ('u11', 23, 29, 44);
-insert into listen values ('u4', 23, 29, 10);
-insert into listen values ('u4', 23, 11, 20);
-insert into listen values ('u42', 23, 29, 10);
-insert into listen values ('u42', 23, 11, 15);
-
--- October 2021 --
--- Session 24 (12 unique songs)
-insert into listen values ('u2', 24, 1, 5);
-insert into listen values ('u2', 24, 8, 8.4);
-insert into listen values ('u2', 24, 12, 3.3);
-insert into listen values ('u2', 24, 17, 125.4);
-insert into listen values ('u2', 24, 2, 63.8);
-insert into listen values ('u2', 24, 7, 34.2);
-insert into listen values ('u2', 24, 36, 12.7);
-insert into listen values ('u2', 24, 37, 19.5);
-insert into listen values ('u2', 24, 35, 10.7);
-insert into listen values ('u11', 24, 2, 13.4);
-insert into listen values ('u11', 24, 43, 102.2);
-insert into listen values ('u11', 24, 9, 9);
-insert into listen values ('u11', 24, 8, 14.5);
-insert into listen values ('u11', 24, 22, 22);
-insert into listen values ('u38', 24, 19, 6);
-insert into listen values ('u38', 24, 33, 19.3);
-insert into listen values ('u38', 24, 2, 10.5);
-insert into listen values ('u38', 24, 8, 20.4);
-
--- September 2021 --
--- Session 25 (13 unique songs)
-insert into listen values ('u37', 25, 25, 2.6);
-insert into listen values ('u37', 25, 35, 10.6);
-insert into listen values ('u37', 25, 17, 39.4);
-insert into listen values ('u37', 25, 31, 19.2);
-insert into listen values ('u37', 25, 29, 18);
-insert into listen values ('u37', 25, 28, 19);
-insert into listen values ('u30', 25, 17, 20);
-insert into listen values ('u30', 25, 44, 19.3);
-insert into listen values ('u30', 25, 34, 43);
-insert into listen values ('u30', 25, 5, 5);
-insert into listen values ('u30', 25, 29, 11);
-insert into listen values ('u18', 25, 1, 12.7);
-insert into listen values ('u18', 25, 26, 26.8);
-insert into listen values ('u18', 25, 17, 23.4);
-insert into listen values ('u18', 25, 21, 32);
-insert into listen values ('u1', 25, 44, 63.9);
-insert into listen values ('u1', 25, 17, 33.8);
-insert into listen values ('u1', 25, 23, 26.5);
-insert into listen values ('u1', 25, 29, 39.5);
-
--- Session 26 (10 unique songs)
-insert into listen values ('u25', 26, 44, 32.6);
-insert into listen values ('u25', 26, 17, 40.5);
-insert into listen values ('u25', 26, 6, 6.5);
-insert into listen values ('u25', 26, 10, 10.9);
-insert into listen values ('u25', 26, 18, 23);
-insert into listen values ('u24', 26, 44, 39.2);
-insert into listen values ('u24', 26, 17, 54.8);
-insert into listen values ('u24', 26, 35, 30.4);
-insert into listen values ('u24', 26, 36, 23.6);
-insert into listen values ('u24', 26, 28, 55.5);
-insert into listen values ('u39', 26, 44, 26.8);
-insert into listen values ('u39', 26, 17, 17.9);
-insert into listen values ('u39', 26, 29, 43.7);
-insert into listen values ('u39', 26, 28, 71.4);
-insert into listen values ('u39', 26, 27, 55);
-
--- August 2021 --
--- Session 27 (8 unique songs)
-insert into listen values ('u12', 27, 41, 32);
-insert into listen values ('u12', 27, 23, 5);
-insert into listen values ('u12', 27, 10, 29);
-insert into listen values ('u12', 27, 16, 5);
-insert into listen values ('u26', 27, 16, 5);
-insert into listen values ('u26', 27, 18, 5.6);
-insert into listen values ('u26', 27, 41, 23.2);
-insert into listen values ('u40', 27, 17, 32);
-insert into listen values ('u40', 27, 23, 12);
-insert into listen values ('u40', 27, 7, 12.5);
-insert into listen values ('u21', 27, 41, 45.2);
-insert into listen values ('u21', 27, 16, 32.6);
-insert into listen values ('u21', 27, 32, 5.3);
-
--- July 2021 --
--- Session 28 (3 unique songs)
-insert into listen values ('u42', 28, 33, 33.3);
-insert into listen values ('u42', 28, 25, 19);
-insert into listen values ('u42', 28, 8, 8.6);
-
--- Session 29 (4 unique songs)
-insert into listen values ('u34', 29, 8, 5.1);
-insert into listen values ('u34', 29, 9, 9.7);
-insert into listen values ('u34', 29, 33, 21.4);
-insert into listen values ('u31', 29, 33, 15.6);
-insert into listen values ('u31', 29, 8, 4.3);
-insert into listen values ('u31', 29, 15, 3.5);
-
--- June 2021 --
--- Session 30 (5 unique songs)
-insert into listen values ('u13', 30, 14, 5.6);
-insert into listen values ('u13', 30, 4, 6.7);
-insert into listen values ('u13', 30, 6, 5);
-insert into listen values ('u13', 30, 27, 30);
-insert into listen values ('u13', 30, 47, 16);
-
--- May 2021 --
--- Session 31 (2 unique songs)
-insert into listen values ('u18', 31, 32, 43.2);
-insert into listen values ('u18', 31, 26, 129.5);
-
--- Session 32 (2 unique songs)
-insert into listen values ('u18', 32, 26, 45.7);
-insert into listen values ('u18', 32, 24, 24.6);
-insert into listen values ('u19', 32, 24, 34.2);
-insert into listen values ('u19', 32, 26, 45);
-
--- April 2021 --
--- Session 33 (2 unique songs)
-insert into listen values ('u41', 33, 37, 43.2);
-insert into listen values ('u41', 33, 15, 32);
-insert into listen values ('u7', 33, 15, 32.2);
-insert into listen values ('u7', 33, 37, 28.44);
-insert into listen values ('u14', 33, 15, 98.34);
-insert into listen values ('u14', 33, 37, 46.65);
-
--- Session 34 (4 unique songs)
-insert into listen values ('u16', 34, 26, 37.32);
-insert into listen values ('u16', 34, 37, 15.89);
-insert into listen values ('u16', 34, 15, 18.99);
-insert into listen values ('u16', 34, 47, 16);
-
--- March 2021 --
--- Session 35 (3 unique songs)
-insert into listen values ('u6', 35, 32, 12.5);
-insert into listen values ('u6', 35, 11, 11.29);
-insert into listen values ('u17', 35, 15, 11.83);
-insert into listen values ('u17', 35, 32, 101.22);
-insert into listen values ('u17', 35, 11, 182.38);
-
--- Session 36 (4 unique songs)
-insert into listen values ('u24', 36, 42, 23.5);
-insert into listen values ('u24', 36, 11, 32.5);
-insert into listen values ('u24', 36, 15, 23.55);
-insert into listen values ('u24', 36, 32, 21.3);
-insert into listen values ('u22', 36, 42, 83.46);
-insert into listen values ('u22', 36, 11, 29.99);
-insert into listen values ('u22', 36, 15, 12.43);
-insert into listen values ('u22', 36, 32, 111.11);
-
--- February 2021 --
--- Session 37 (4 unique songs)
-insert into listen values ('u29', 37, 39, 12.97);
-insert into listen values ('u29', 37, 12, 12.77);
-insert into listen values ('u29', 37, 40, 49);
-insert into listen values ('u37', 37, 36, 125);
-insert into listen values ('u37', 37, 12, 33.36);
-
--- Session 38 (2 unique songs)
-insert into listen values ('u12', 38, 25, 32.55);
-insert into listen values ('u12', 38, 40, 281);
-insert into listen values ('u38', 38, 25, 286.21);
-
--- January 2021 --
--- Session 39 (1 unique song)
-insert into listen values ('u7', 39, 4, 251);
-insert into listen values ('u25', 39, 4, 345.32);
-insert into listen values ('u32', 39, 4, 501);
-
--- Session 40 (8 unique songs)
-insert into listen values ('u42', 40, 4, 104.18);
-insert into listen values ('u42', 40, 9, 23);
-insert into listen values ('u42', 40, 6, 24);
-insert into listen values ('u42', 40, 43, 15);
-insert into listen values ('u42', 40, 3, 14);
-insert into listen values ('u42', 40, 41, 41.2);
-insert into listen values ('u42', 40, 18, 19.91);
-insert into listen values ('u5', 40, 3, 10);
-insert into listen values ('u5', 40, 4, 111);
-insert into listen values ('u5', 40, 38, 12.23);
-insert into listen values ('u5', 40, 6, 23.35);
+-- u42 Sessions
+insert into listen values ('u42', 3, 29, 10);
+insert into listen values ('u42', 3, 11, 15);
+insert into listen values ('u42', 2, 33, 33.3);
+insert into listen values ('u42', 2, 25, 19);
+insert into listen values ('u42', 2, 8, 8.6);
+insert into listen values ('u42', 1, 4, 104.18);
+insert into listen values ('u42', 1, 9, 23);
+insert into listen values ('u42', 1, 6, 24);
+insert into listen values ('u42', 1, 43, 15);
+insert into listen values ('u42', 1, 3, 14);
+insert into listen values ('u42', 1, 41, 41.2);
+insert into listen values ('u42', 1, 18, 19.91);
 
 --- Playlists ---
 insert into playlists values (1, 'Fun Songs', 'u25');
@@ -642,6 +691,10 @@ insert into playlists values (28, 'Davood`s Favorites', 'u10');
 insert into playlists values (29, 'Ryder`s Favorites', 'u12');
 insert into playlists values (30, 'Songs for 291', 'u10');
 insert into playlists values (31, 'Cool Playlist', 'u18');
+insert into playlists values (32, 'Give Me Everything', 'u26');
+insert into playlists values (33, 'Blinding', 'u10');
+insert into playlists values (34, 'Peaches', 'a56');
+insert into playlists values (35, 'Empty Playlist', 'a56');
 
 --- PlInclude ---
 -- Playlist 1
@@ -929,6 +982,22 @@ insert into plinclude values (31, 25, 8);
 insert into plinclude values (31, 16, 9);
 insert into plinclude values (31, 46, 10);
 
+-- Playlist 32
+insert into plinclude values (32, 27, 1);
+insert into plinclude values (32, 25, 2);
+insert into plinclude values (32, 44, 3);
+
+-- Playlist 33
+insert into plinclude values (33, 42, 1);
+insert into plinclude values (33, 43, 2);
+insert into plinclude values (33, 50, 3);
+insert into plinclude values (33, 51, 4);
+
+-- Playlist 34
+insert into plinclude values (34, 49, 1);
+insert into plinclude values (34, 32, 2);
+insert into plinclude values (34, 51, 3);
+
 --- Artists ---
 -- u1 appears in both users and artists
 insert into artists values ('u1', 'Dan', 'Canada', 'pw123');
@@ -971,6 +1040,26 @@ insert into artists values ('a36', 'Avril Lavigne', 'Canadian', 'pw');
 insert into artists values ('a37', 'Flo Rida', 'American', 'pw');
 insert into artists values ('a38', 'Spice Girls', 'British', 'pw');
 insert into artists values ('a39', 'Ed Sheeran', 'England', 'pw');
+insert into artists values ('a40', 'Bad Company', 'England', 'pw');
+insert into artists values ('a41', 'Kendrick Lamar', 'American', 'pw');
+insert into artists values ('a42', 'Taylor Swift', 'uNitEd StAtes', 'pw');
+insert into artists values ('a43', 'Freshlyground', 'South Africa', 'pw');
+insert into artists values ('a44', 'Christina Aguilera', 'American', 'pw');
+insert into artists values ('a45', 'Usher', 'AmErIcan', 'pw');
+insert into artists values ('a46', 'Owl City', 'AMERICAN', 'pw');
+insert into artists values ('a47', 'John Newman', 'EnGLiSh', 'pw');
+insert into artists values ('a48', 'Dua Lipa', 'EngLANd', 'pw');
+insert into artists values ('a49', 'Rihanna', 'Barbados', 'pw');
+insert into artists values ('a50', 'Ne-Yo', 'American', 'pw');
+insert into artists values ('a51', 'Afrojack', 'NetherLands', 'pw');
+insert into artists values ('a52', 'Nayer', 'American', 'pw');
+insert into artists values ('a53', 'Chris Brown', 'AMerican', 'pw');
+insert into artists values ('a54', 'Sabi', 'american', 'pw');
+insert into artists values ('a55', 'will.i.am', 'AmeriCan', 'pw');
+insert into artists values ('a56', 'Justin Bieber', 'CaNAdA', 'pw');
+insert into artists values ('a57', 'Daniel Caesar', 'CaNadian', 'pw');
+insert into artists values ('a58', 'Giveon', 'American', 'pw');
+insert into artists values ('a59', 'Enrique Iglesias', 'Spanish', 'pw');
 
 --- Perform ---
 insert into perform values ('a1', 2);
@@ -1024,6 +1113,27 @@ insert into perform values ('a34', 42);
 insert into perform values ('a35', 43);
 insert into perform values ('a35', 44);
 insert into perform values ('a36', 45);
+insert into perform values ('a37', 13);
 insert into perform values ('a37', 46);
 insert into perform values ('a38', 47);
 insert into perform values ('a39', 48);
+insert into perform values ('a40', 49);
+insert into perform values ('a41', 50);
+insert into perform values ('a42', 50);
+insert into perform values ('a43', 1);
+insert into perform values ('a44', 9);
+insert into perform values ('a44', 38);
+insert into perform values ('a45', 12);
+insert into perform values ('a46', 15);
+insert into perform values ('a47', 16);
+insert into perform values ('a48', 21);
+insert into perform values ('a49', 26);
+insert into perform values ('a50', 27);
+insert into perform values ('a51', 27);
+insert into perform values ('a52', 27);
+insert into perform values ('a53', 31);
+insert into perform values ('a54', 32);
+insert into perform values ('a55', 39);
+insert into perform values ('a56', 51);
+insert into perform values ('a57', 51);
+insert into perform values ('a58', 51);
