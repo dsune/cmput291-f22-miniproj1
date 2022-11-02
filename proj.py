@@ -1,4 +1,4 @@
-from curses.ascii import NUL
+from curses.ascii import NUL, isdigit
 from multiprocessing import connection
 import sqlite3
 from sqlite3 import OperationalError
@@ -511,15 +511,50 @@ class User(People):
                 continue
     #-----------------------------------------------------------------------------------------
     def songSelected(self, song):
-        # song actions: (1) listen to it, (2) see more information about it, or (3) add it to a playlist.
-        #  More information for a song is the names of artists who performed it in addition to id, title and duration of the song as well as the names of playlists the song is in (if any). 
-        # When a song is selected for listening, a listening event is recorded within the current session of the user (if a session has already started for the user) or within a new session (if not). 
-        # When starting a new session, follow the steps given for starting a session.
-        #  A listening event is recorded by either inserting a row to table listen or increasing the listen count in this table by 1. 
-        # When adding a song to a playlist, the song can be added to an existing playlist owned by the user (if any) or to a new playlist. 
-        # When it is added to a new playlist, a new playlist should be created with a unique id (created by your system) and the uid set to the id of the user and a title should be obtained from input. 
-        print("Song actions here")
+        # song actions: 
+        # (1) listen to it: listening event is recorded within the current session of the user (if a session has already started for the user) or within a new session (if not)
+        #                   : When starting a new session, follow the steps given for starting a session.
+        #                   : A listening event is recorded by either inserting a row to table listen or increasing the listen count in this table by 1.
+        #  (2) see more information: Artist: [name] SongId:[id] , STitle:[title], SDuration:[duration] ,PlaylistSongIncluded [list].
+        #  (3) add it to a playlist: When adding a song to a playlist, the song can be added to an existing playlist owned by the user (if any) or to a new playlist.
+        #                           :When it is added to a new playlist, a new playlist should be created with a unique id (created by your system) and the uid set to the id of the user and a title should be obtained from input. 
+        entered = ""
+        while entered != "4":
+
+            #options
+            print("\n\tSONGS")
+            print(" 1) Listen to song \n 2)See more information\n 3) Add song to playlist\n 4)Exit this menu")
+            entered = input("Enter you choice: ")
+
+            if entered == "1":
+                print("Listen to song function")
+            elif entered == "2":
+                self.moreInfo(song)
+            elif entered == "3":
+                print("Add song to playlist function")
+            elif entered == "4":
+                print("\nQuitting songs menu...")
+                break
+            else:
+                print("Invalid option! Try again.")
+                continue
+    #-----------------------------------------------------------------------------------
+    def moreInfo(self,song):
+        # song (id, title, duration, type)
+        #songs(sid, title, duration)
+        #playlists(pid, title, uid)
+        #plinclude(pid, sid, sorder)
+        # see more information about it: Artist: [name] SongId:[id] , STitle:[title], SDuration:[duration] ,PlaylistSongIncluded [list].
+        self.cursor.execute("SELECT a.name FROM songs s, artists a, perform p WHERE s.sid = ? AND s.sid = p.sid AND p.aid = a.aid;", (song[0],))
+        Aname = self.cursor.fetchone()
+
+        self.cursor.execute("SELECT p.title FROM playlists p, songs s, plinclude l WHERE s.sid = ? AND s.sid = l.sid AND l.pid = p.pid;",(song[0]))
+        songIncluded = self.cursor.fetchall()
+
+        print()
         pass
+
+
     #-----------------------------------------------------------------------------------
     def playlistSelected(self, playlist):
         # query to return all songs in playlist.
