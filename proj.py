@@ -507,9 +507,10 @@ class User(People):
                 item = SPList[c]
                 if item[3] == "song":
                     self.songSelected(item)
+                    break
                 elif item[3] == "playlist":
                     self.playlistSelected(item)
-                    
+                    break
             elif choice.lower() == "q":
                 print("\nQuitting selection menu...")
                 break
@@ -557,8 +558,10 @@ class User(People):
         self.cursor.execute("SELECT a.name FROM songs s, artists a, perform p WHERE s.sid = ? AND s.sid = p.sid AND p.aid = a.aid;", (song[0],))
         Aname = self.cursor.fetchone()
 
-        self.cursor.execute("SELECT p.title FROM playlists p, songs s, plinclude l WHERE s.sid = ? AND s.sid = l.sid AND l.pid = p.pid;",(song[0]))
+        self.cursor.execute("SELECT p.title FROM playlists p, songs s, plinclude l WHERE s.sid = ? AND s.sid = l.sid AND l.pid = p.pid;",(song[0],) )
         songIncluded = self.cursor.fetchall()
+
+        
 
         print()
         pass
