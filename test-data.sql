@@ -695,6 +695,7 @@ insert into playlists values (32, 'Give Me Everything', 'u26');
 insert into playlists values (33, 'Blinding', 'u10');
 insert into playlists values (34, 'Peaches', 'a56');
 insert into playlists values (35, 'Empty Playlist', 'a56');
+insert into playlists values (36, 'User 1 Playlist', 'u1');
 
 --- PlInclude ---
 -- Playlist 1
