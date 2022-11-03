@@ -8,10 +8,10 @@ import getpass
 import random
 from turtle import title
 
-#db_name = sys.argv[1]
+# db_name = sys.argv[1]
 
-#conn = sqlite3.connect(db_name)
-conn = sqlite3.connect('proj.db')
+# conn = sqlite3.connect(db_name)
+# conn = sqlite3.connect('proj.db')
 #----------------------------------------------------------------------------------------------------------------------------------------
 def execFile(filename, cursor):
     """
@@ -483,11 +483,12 @@ class User(People):
 
             #options
             print("\n\tSELECTION MENU")
-            print("Select an Artist (input a number)")
+            print("Select an Artist (An Artiste)")
             print("Input 's' to Display All Results")
             print("Input 'q' to Exit Selection Menu")
             choice = input("Select: ")
 
+            artistSongs = None
             if choice.isdigit():
                 c = int(choice) - 1
                 if c < len(SPList):
@@ -500,16 +501,24 @@ class User(People):
                                         """, (SPList[0][3],))
                     artistSongs = self.cursor.fetchall()
                     indx = 1
+
                     for a in artistSongs:
-                        print(str(indx) +"Song ID: " + str(a[0]) + " Title: " + a[1] + " Duration: " + str(a[2]))
+                        print(str(indx) + " " +"Song ID: " + str(a[0]) + " Title: " + a[1] + " Duration: " + str(a[2]))
                         indx += 1
+                    user_choice = input("Enter Option")
+                    if user_choice.isdigit():
+                        if( int(user_choice) > len(artistSongs)):
+                            print("Invalid Option")
+                        else:
+                            print(artistSongs[int(user_choice) - 1])
+                            self.songSelected(artistSongs[int(user_choice) - 1])
                 else:
                     print("Invalid option! Try again")
             elif choice.lower() == "q":
                 print("\nQuitting selection menu...")
                 break
             elif choice.lower() == "s":
-                self.displayall(SPList)
+                self.displayall(artistSongs)
             else:
                 print("Invalid option! Try again.")
                 continue
@@ -859,11 +868,13 @@ class SearchedArtist:
         self.noSongs = noSongs
 #=========================================
 def main():
-    conn = sqlite3.connect('proj.db')
+
+    db_name = sys.argv[1]
+    conn = sqlite3.connect(db_name)
 
     c = conn.cursor()
-    execFile('prj-tables.sql',c)
-    execFile('test-data.sql',c )
+    # execFile('prj-tables.sql',c)
+    # execFile('test-data.sql',c )
     
     while(True):
         person = loginScreen(c , conn)
