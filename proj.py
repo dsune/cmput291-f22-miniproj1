@@ -497,7 +497,7 @@ class User(People):
 
             #options
             print("\n\tSELECTION MENU")
-            print("Select a Playlist or Song (input a number")
+            print("Select a Playlist or Song (input a number)")
             print("Input 's' to Display All Results")
             print("Input 'q' to Exit Selection Menu")
             choice = input("Select: ")
@@ -533,7 +533,8 @@ class User(People):
 
             #options
             print("\n\tSONGS")
-            print(" 1) Listen to song \n 2)See more information\n 3) Add song to playlist\n 4)Exit this menu")
+            print("Selected Song: " + song[1])
+            print(" 1) Listen to song \n 2) See more information\n 3) Add song to playlist\n 4) Exit this menu")
             entered = input("Enter you choice: ")
 
             if entered == "1":
@@ -541,7 +542,7 @@ class User(People):
             elif entered == "2":
                 self.moreInfo(song)
             elif entered == "3":
-                print("Add song to playlist function")
+                self.addToPlaylist(song)
             elif entered == "4":
                 print("\nQuitting songs menu...")
                 break
@@ -561,11 +562,57 @@ class User(People):
         self.cursor.execute("SELECT p.title FROM playlists p, songs s, plinclude l WHERE s.sid = ? AND s.sid = l.sid AND l.pid = p.pid;",(song[0],) )
         songIncluded = self.cursor.fetchall()
 
-        
-
         print()
-        pass
 
+    #-----------------------------------------------------------------------------------
+    def addToPlaylist(self,song):
+        print("\nWhat type of playlist would you like to add to?\n1) Add to an EXISTING playlist\n2) Create and add to a NEW playlist\n3) Exit this menu")
+        plChoice = input("Select an option: ")
+
+        if(plChoice == "1"):
+            # requests a playlsit ID from the user, checks if the playlist exists in the database
+            pidAdd = input("\nWhich playlist would you like to add this song to?\nIMPORTANT: The playlist must be created by you.\nEnter a Playlist ID: ")
+            self.cursor.execute("SELECT * FROM playlists WHERE pid = ? AND uid = ?;", (pidAdd, self.id,))
+            plInfo = self.cursor.fetchone()
+            if not plInfo:
+                print("\nThis is not a valid playlist.\nPlease make sure the playlist exists and is created by you.")
+            else:
+                # finds the current max 'sorder' from the selected playlist, sets value to 0 if playlist is empty
+                self.cursor.execute("SELECT MAX(sorder) FROM plinclude WHERE pid = ?;", (pidAdd,))
+                maxSOrder = self.cursor.fetchone()[0]
+                if (maxSOrder is None):
+                    maxSOrder = 0
+                
+                # inserts the song into the selected playlist
+                self.cursor.execute("INSERT INTO plinclude VALUES (?,?,?);", (pidAdd, song[0], maxSOrder + 1,))
+                
+                # verifies that the playlist has been updated
+                # self.cursor.execute("SELECT * FROM plinclude WHERE pid = ?;", (pidAdd,))
+                # result = self.cursor.fetchall()
+                # print(result)
+        elif(plChoice == "2"):
+            # gets playlist name from user
+            plName = input("Input the name for your NEW playlist: ")
+
+            # generates a new playlist id that is one integer higher than the current max
+            self.cursor.execute("SELECT MAX(pid) FROM playlists;")
+            pidNew = self.cursor.fetchone()[0] + 1
+            print(pidNew)
+
+            # creates a new playlist with the given name, generated pid, and current user ID
+            self.cursor.execute("INSERT INTO playlists VALUES (?,?,?)", (pidNew, plName, self.id))
+
+            # inserts the selected song into the new playlist, sets sorder to 1
+            self.cursor.execute("INSERT INTO plinclude VALUES (?,?,?);", (pidNew, song[0], 1,))
+
+            # verifies that the song has been added to the new playlist
+            # self.cursor.execute("SELECT * FROM plinclude WHERE pid = ?;", (pidNew,))
+            # result = self.cursor.fetchall()
+            # print(result)
+        elif(plChoice == "3"):
+            print("\nExiting Song Options")
+        else:
+            print("\nInvalid option, select a option from 1-3")
 
     #-----------------------------------------------------------------------------------
     def playlistSelected(self, playlist):
@@ -583,8 +630,7 @@ class User(People):
             tohold.append((song.id,song.title,song.duration, song.type))
         self.displayall(tohold)
         self.selection(tohold)
-        
-
+    
         pass
 #=============================================================================================================================================  
     def Options(self):
@@ -608,7 +654,7 @@ class User(People):
             if menuChoice == "1":
                 self.startSession()
             elif menuChoice == "2":
-                keyword = input("Enter: ")
+                keyword = input("Enter Search Terms: ")
                 self.searchSPlaylist(keyword)
             elif menuChoice == "3":
                 self.searchArtiste()
