@@ -319,7 +319,7 @@ class User(People):
 
             d1 = current_day.strftime("%Y-%m-%d")
 
-            self.cursor.execute("SELECT COUNT(sno) FROM sessions;")
+            self.cursor.execute("SELECT COUNT(sno) FROM sessions WHERE uid = ?;", (self.id,))
             number_of_sessions = self.cursor.fetchone()
 
             # Create a new session
@@ -330,7 +330,7 @@ class User(People):
                 print("Starting session " + str(self.session_no))
             else:
                 # Checks for the maximum session number and adds one to it
-                self.cursor.execute("SELECT MAX(sno) FROM sessions;")
+                self.cursor.execute("SELECT MAX(sno) FROM sessions WHERE uid = ?;", (self.id,))
                 last_added_session = self.cursor.fetchone()
                 self.session_no = last_added_session[0] + 1
                 new_session = (self.id,self.session_no,d1,)
@@ -513,7 +513,10 @@ class User(People):
                 else:
                     # Adds one to the number of matches in the Track_Song_Playlist class
                     Search_P[k[0]].no_of_matches += 1
-
+        
+        if (bool(Search_P) == False and bool(Search_S) == False):
+            print("No results found")
+            return None
 
         sortedPSlist = self.Create_new_table_p_s_duration(Search_S,Search_P)
 
