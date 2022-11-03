@@ -561,12 +561,12 @@ class User(People):
         self.cursor.execute("SELECT p.title FROM playlists p, songs s, plinclude l WHERE s.sid = ? AND s.sid = l.sid AND l.pid = p.pid;",(song[0],) )
         songIncluded = self.cursor.fetchall()
 
-        
-
+        print("\n\t------------INFORMATION ABOUT THIS SONG-------------")
+        print("Artist:", Aname[0], "SongId:", song[0] , "Song Title:", song[1], "Song Duration:", song[2])
+        print("This song is in these playlists:")
+        for playlist in songIncluded:
+            print("*",playlist[0])
         print()
-        pass
-
-
     #-----------------------------------------------------------------------------------
     def playlistSelected(self, playlist):
         # query to return all songs in playlist.
@@ -583,9 +583,6 @@ class User(People):
             tohold.append((song.id,song.title,song.duration, song.type))
         self.displayall(tohold)
         self.selection(tohold)
-        
-
-        pass
 #=============================================================================================================================================  
     def Options(self):
         """
