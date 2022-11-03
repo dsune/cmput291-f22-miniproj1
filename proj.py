@@ -314,7 +314,7 @@ class User(People):
         """
 
         if(self.session_no is not None):
-            print("You cant start a new session")
+            print("You already have an active session, cannot start a new one")
         else:
             # Gets the session  with the highest number
             current_day = date.today()
@@ -538,7 +538,7 @@ class User(People):
             entered = input("Enter you choice: ")
 
             if entered == "1":
-                print("Listen to song function")
+                self.listenToSong(song)
             elif entered == "2":
                 self.moreInfo(song)
             elif entered == "3":
@@ -549,6 +549,33 @@ class User(People):
             else:
                 print("Invalid option! Try again.")
                 continue
+    #-----------------------------------------------------------------------------------
+    def listenToSong(self, song):
+        title = song[1]
+        songID = song[0]
+
+        # starts a new session if there is none currently active
+        if (self.session_no is None):
+            self.startSession()
+        
+        # checks if the song has already been listened to in the current session
+        self.cursor.execute("SELECT sid FROM listen WHERE sid = ? AND sno = ?;", (songID, self.session_no,))
+        songExist = self.cursor.fetchone()
+
+        if (songExist is None):
+            # if the song has not been listend to, adds it to the listen table
+            self.cursor.execute("INSERT INTO listen VALUES (?,?,?,?)", (self.id, self.session_no, songID, 1,))
+        else:
+            # if the song has already been listened to, increment the cnt column by +1
+            self.cursor.execute("UPDATE listen SET cnt = cnt + 1 WHERE sid = ? AND sno = ?;", (songID, self.session_no))
+        
+        print("\nYou listened to", title)
+
+        # verify that the tables have been updated
+        # self.cursor.execute("SELECT * FROM listen WHERE sno = ?", (self.session_no,))
+        # result = self.cursor.fetchall()
+        # print(result)
+
     #-----------------------------------------------------------------------------------
     def moreInfo(self,song):
         # song (id, title, duration, type)
