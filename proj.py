@@ -418,6 +418,7 @@ class User(People):
         else:
             print("No Artiste Found")
             return None
+        self.selectArtists(Ordered_list)
 
     def Create_new_table_Artiste(self , artiste):
         # Create table to store songs and playlists
@@ -440,7 +441,7 @@ class User(People):
             
 
         # Order the table based on number of matches
-        self.cursor.execute("""SELECT name , nationality , noSongs
+        self.cursor.execute("""SELECT name , nationality , noSongs, id
                                 FROM Art_or
                                 ORDER BY Match
                                 DESC ;   
@@ -472,6 +473,46 @@ class User(People):
         for sp in SPlist:
             print(str(indx) + ") " + "name: "+ sp[0] + " | nationality:", sp[1], "| SongsPerformed:", sp[2])
             indx += 1
+
+    def selectArtists(self, SPList):
+        """
+        Based on user selection do appropriate action.
+        """
+        choice = ""
+        while choice != "q":
+
+            #options
+            print("\n\tSELECTION MENU")
+            print("Select an Artist (input a number)")
+            print("Input 's' to Display All Results")
+            print("Input 'q' to Exit Selection Menu")
+            choice = input("Select: ")
+
+            if choice.isdigit():
+                c = int(choice) - 1
+                if c < len(SPList):
+                    item = SPList[c]
+                    self.cursor.execute("""
+                                        SELECT s.sid, s.title, s.duration
+                                        FROM songs s, perform p
+                                        WHERE s.sid = p.sid
+                                        AND p.aid = ?;
+                                        """, (SPList[0][3],))
+                    artistSongs = self.cursor.fetchall()
+                    indx = 1
+                    for a in artistSongs:
+                        print(str(indx) +"Song ID: " + str(a[0]) + " Title: " + a[1] + " Duration: " + str(a[2]))
+                        indx += 1
+                else:
+                    print("Invalid option! Try again")
+            elif choice.lower() == "q":
+                print("\nQuitting selection menu...")
+                break
+            elif choice.lower() == "s":
+                self.displayall(SPList)
+            else:
+                print("Invalid option! Try again.")
+                continue
     
     #----------------------------------------------------------------------------------------------------------------------------------------
     def searchSPlaylist(self,keywords):
