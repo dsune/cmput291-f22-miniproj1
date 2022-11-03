@@ -497,20 +497,23 @@ class User(People):
 
             #options
             print("\n\tSELECTION MENU")
-            print("Select a Playlist or Song (input a number")
+            print("Select a Playlist or Song (input a number)")
             print("Input 's' to Display All Results")
             print("Input 'q' to Exit Selection Menu")
             choice = input("Select: ")
 
             if choice.isdigit():
                 c = int(choice) - 1
-                item = SPList[c]
-                if item[3] == "song":
-                    self.songSelected(item)
-                    break
-                elif item[3] == "playlist":
-                    self.playlistSelected(item)
-                    break
+                if c < len(SPList):
+                    item = SPList[c]
+                    if item[3] == "song":
+                        self.songSelected(item)
+                        break
+                    elif item[3] == "playlist":
+                        self.playlistSelected(item)
+                        break
+                else:
+                    print("Invalid option! Try again")
             elif choice.lower() == "q":
                 print("\nQuitting selection menu...")
                 break
@@ -558,14 +561,14 @@ class User(People):
         self.cursor.execute("SELECT a.name FROM songs s, artists a, perform p WHERE s.sid = ? AND s.sid = p.sid AND p.aid = a.aid;", (song[0],))
         Aname = self.cursor.fetchone()
 
-        self.cursor.execute("SELECT p.title FROM playlists p, songs s, plinclude l WHERE s.sid = ? AND s.sid = l.sid AND l.pid = p.pid;",(song[0],) )
+        self.cursor.execute("SELECT p.title, l.sid FROM playlists p, songs s, plinclude l WHERE s.sid = ? AND s.sid = l.sid AND l.pid = p.pid;",(song[0],) )
         songIncluded = self.cursor.fetchall()
 
         print("\n\t------------INFORMATION ABOUT THIS SONG-------------")
-        print("Artist:", Aname[0], "SongId:", song[0] , "Song Title:", song[1], "Song Duration:", song[2])
+        print("Artist:", Aname[0], "| Song Id:", song[0] , "| Song Title:", song[1], "| Song Duration:", song[2])
         print("This song is in these playlists:")
         for playlist in songIncluded:
-            print("*",playlist[0])
+            print("*",playlist[0], playlist[1])
         print()
     #-----------------------------------------------------------------------------------
     def playlistSelected(self, playlist):
