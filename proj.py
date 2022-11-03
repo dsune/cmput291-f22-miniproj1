@@ -366,7 +366,113 @@ class User(People):
         # Selecting an artist will return the id, title, and duration of all songs they have performed.
             
         # :param keywords: user inputted string
-        pass
+         # Stores songs
+        Search_A = {}
+        # Stores Playlist
+        x = keywords.split(" ")
+        for k in x:
+            placeholder = f"""
+            SELECT aid , name , nationality FROM artists
+            WHERE name LIKE "%{k}%"
+            COLLATE NOCASE
+            UNION
+            SELECT DISTINCT a.aid , a.name  ,a.nationality from 
+            songs s , artists a , perform p
+            WHERE p.aid = a.aid 
+            AND s.sid = p.sid 
+            AND s.title LIKE "%{k}%"
+            COLLATE NOCASE;
+            """ 
+            self.cursor.execute(placeholder)
+            songs_artiste = self.cursor.fetchall()
+        
+
+            # Checks for how many times a song occurs
+            for i in songs_artiste:
+                if i[0] not in Search_A:
+                    # Creates Class to store song in dictionary
+                    self.cursor.execute("""SELECT COUNT(p.sid)
+                    FROM artists a , songs s , perform p 
+                    WHERE p.aid = a.aid 
+                    AND s.sid = p.sid
+                    AND p.aid = ?
+                    GROUP BY a.aid ;""" , (i[0],))
+
+                    value = self.cursor.fetchone()[0]
+                    if(value == None):
+                        artist_seached = SearchedArtist(i[1] , i[2], 1,0)
+                    else:
+                        artist_seached = SearchedArtist(i[1] , i[2], 1,value)
+                    Search_A[i[0]] = artist_seached
+
+                else:
+                    # Adds one to the number of matches in the Track_Song_Playlist class
+                    Search_A[i[0]].match += 1
+
+        Ordered_list = self.Create_new_table_Artiste(Search_A)
+
+        if(len(Search_A) > 5):
+            self.displayfiveArtists(Ordered_list)
+        elif(len(Search_A) < 5 and len(Search_A) != 0):
+            self.displayallArtists(Ordered_list)
+        else:
+            print("No Artiste Found")
+            return None
+
+    def Create_new_table_Artiste(self , artiste):
+        # Create table to store songs and playlists
+        self.cursor.execute("""
+                                CREATE TABLE IF NOT EXISTS Art_or(
+                                    id CHAR,
+                                    name CHAR,
+                                    nationality CHAR , 
+                                    Match INT ,
+                                    noSongs INT ,
+                                    PRIMARY KEY(id)
+                                )
+                            """)
+            
+        # Insert songs into the new table
+        for s in artiste:
+            self.cursor.execute(""" 
+                                    INSERT INTO Art_or VALUES (?,?,?,?,?)
+                                """, (s, artiste[s].name, artiste[s].nationality , artiste[s].match , artiste[s].noSongs ))
+            
+
+        # Order the table based on number of matches
+        self.cursor.execute("""SELECT name , nationality , noSongs
+                                FROM Art_or
+                                ORDER BY Match
+                                DESC ;   
+                                """)
+            
+        songs_playlist_combine = self.cursor.fetchall()
+        # Deletes table after search
+
+        self.cursor.execute("""
+                                DROP TABLE Art_or ;
+        """)
+
+        return songs_playlist_combine
+
+    #----------------------------------------------------------------------------------------------------------------------------------------
+    def displayfiveArtists(self,SPlist):
+        #prints top five songs and playlists
+         # id ,title, duration, type
+        indx = 1
+        for sp in SPlist:
+            if indx <= 5:
+                print(str(indx) + ") " + "name: "+ sp[0] + " | nationality:", sp[1], "| SongsPerformed:", sp[2])
+                indx += 1
+            else:
+                break
+    #----------------------------------------------------------------------------------------------------------------------------------------
+    def displayallArtists(self,SPlist):
+        indx = 1
+        for sp in SPlist:
+            print(str(indx) + ") " + "name: "+ sp[0] + " | nationality:", sp[1], "| SongsPerformed:", sp[2])
+            indx += 1
+    
     #----------------------------------------------------------------------------------------------------------------------------------------
     def searchSPlaylist(self,keywords):
         #Searches for songs and playlists that match one or more keywords provided by the user.
@@ -679,7 +785,8 @@ class User(People):
                 keyword = input("Enter Search Terms: ")
                 self.searchSPlaylist(keyword)
             elif menuChoice == "3":
-                self.searchArtiste()
+                keyword = input("Enter Search Terms: ")
+                self.searchArtiste(keyword)
             elif menuChoice == "4":
                 self.endSession()
             elif menuChoice == "5":
@@ -699,6 +806,14 @@ class Track_Song_Playlist:
         self.type = type
         self.session_no = None
 #========================================================================================================================================
+
+class SearchedArtist:
+    def __init__(self, name , nationality , match, noSongs):
+        self.name = name
+        self.nationality = nationality
+        self.match = match
+        self.noSongs = noSongs
+#=========================================
 def main():
     conn = sqlite3.connect('proj.db')
 
