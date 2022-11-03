@@ -8,11 +8,11 @@ import getpass
 import random
 from turtle import title
 
-#db_name = sys.argv[1]
+# db_name = sys.argv[1]
 
-#conn = sqlite3.connect(db_name)
-conn = sqlite3.connect('proj.db')
-
+# conn = sqlite3.connect(db_name)
+# conn = sqlite3.connect('proj.db')
+#----------------------------------------------------------------------------------------------------------------------------------------
 def execFile(filename, cursor):
     """
     Allows the reading and execution of SQL queries from files that are passed through as arguments
@@ -26,8 +26,7 @@ def execFile(filename, cursor):
 
     for line in lines:
         cursor.execute(line)
-
-
+#----------------------------------------------------------------------------------------------------------------------------------------
 def regAccount(cursor, conn):
     while(True):
         print("\nCreate an Account")
@@ -58,7 +57,7 @@ def regAccount(cursor, conn):
                     break
                 else:
                     print("Select a value between 1 and 2")
-
+#----------------------------------------------------------------------------------------------------------------------------------------
 def loginScreen(cursor, conn):
     """
     Prompts the user to login with their user ID and password.
@@ -136,14 +135,14 @@ def loginScreen(cursor, conn):
 
     print("Program shut down")
     return None
-
+#========================================================================================================================================
 class People:
     def __init__(self, id , cursor , conn):
         self.id = id
         self.cursor = cursor
         self.conn = conn
         self.session_no = None
-
+#========================================================================================================================================
 class Artiste(People):
     def addSong(self):
         while(True):
@@ -168,28 +167,28 @@ class Artiste(People):
                                 """, (self.id, song_name, song_dur,))
             result = self.cursor.fetchone()
             if(result == None):
-                # checks if song id exists before inserting into table
+                # finds the max sid and adds 1 to determine the new sid
                 self.cursor.execute("""
-                                    SELECT sid
+                                    SELECT MAX(sid)
                                     FROM songs;
                                     """)
-                id_list = self.cursor.fetchall()
-                while(True):
-                    new_id = random.randint(0, 500)
-                    if new_id not in id_list:
-                        break
-                    else:
-                        continue
+                newSongID = self.cursor.fetchone()[0] + 1
+                # while(True):
+                #     new_id = random.randint(0, 500)
+                #     if new_id not in id_list:
+                #         break
+                #     else:
+                #         continue
                 
                 # add new song to the 'songs' table
                 self.cursor.execute("""
                                     INSERT INTO songs VALUES (?, ?, ?)
-                                    """, (new_id, song_name, song_dur))
+                                    """, (newSongID, song_name, song_dur))
                 
                 # adds a new entry to 'perform' table with current artist id and the new song id
                 self.cursor.execute("""
                                     INSERT INTO perform VALUES (?, ?)
-                                    """, (self.id, new_id))
+                                    """, (self.id, newSongID))
                 
                 # prompts user for any additional artists that performed the song
                 while(True):
@@ -212,7 +211,7 @@ class Artiste(People):
                             else:
                                 self.cursor.execute("""
                                                     INSERT INTO perform VALUES (?, ?)
-                                                    """, (add_aid, new_id))
+                                                    """, (add_aid, newSongID))
                             break
                     elif add_perform == 'n':
                         break
@@ -223,7 +222,7 @@ class Artiste(People):
                 print("\nThis song already exists in your discography")
                 continue
         self.conn.commit()
-
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def findTopFan(self):
         rank = 1
 
@@ -248,8 +247,7 @@ class Artiste(People):
             for fan in fans:
                 print(str(rank) + ") " + "User ID: " + fan[0] + " | Listening Time: " + str(round(fan[1], 2)))
                 rank += 1
-            
-
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def findTopPlaylist(self):
         rank = 1
 
@@ -274,7 +272,7 @@ class Artiste(People):
             for pl in playlists:
                 print(str(rank) + ") " + "Playlist ID: " + str(pl[0]) + " | Title: " + str(pl[1]) + " | Number of your songs in this playlist: " + str(pl[2]))
                 rank += 1
-
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def Options(self):
         """
         Presents the menu options for an ARTIST. 
@@ -303,7 +301,7 @@ class Artiste(People):
                 break
             else:
                 print("Invalid option, please input a number between x and x")
-
+#========================================================================================================================================
 class User(People):
     def startSession(self):
         """
@@ -321,7 +319,7 @@ class User(People):
 
             d1 = current_day.strftime("%Y-%m-%d")
 
-            self.cursor.execute("SELECT COUNT(sno) FROM sessions;")
+            self.cursor.execute("SELECT COUNT(sno) FROM sessions WHERE uid = ?;", (self.id,))
             number_of_sessions = self.cursor.fetchone()
 
             # Create a new session
@@ -332,16 +330,16 @@ class User(People):
                 print("Starting session " + str(self.session_no))
             else:
                 # Checks for the maximum session number and adds one to it
-                self.cursor.execute("SELECT MAX(sno) FROM sessions;")
+                self.cursor.execute("SELECT MAX(sno) FROM sessions WHERE uid = ?;", (self.id,))
                 last_added_session = self.cursor.fetchone()
                 self.session_no = last_added_session[0] + 1
                 new_session = (self.id,self.session_no,d1,)
-                print("Starting session " + str(self.session_no))
+                print("\nStarting session " + str(self.session_no))
                 
             # Insert session into table
             self.cursor.execute("insert into sessions values (?, ?, ?, NULL);",new_session)
             self.conn.commit()
-
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def endSession(self):
         # Checks if there is an active session
         if(self.session_no is None):
@@ -355,10 +353,10 @@ class User(People):
             self.cursor.execute("""UPDATE sessions 
                                     SET end = ?
                                     WHERE sno = ?  ;""" , (current_day,self.session_no))
-            print("End of session "  + str(self.session_no))
+            print("\nEnd of session "  + str(self.session_no))
             self.session_no = None
             self.conn.commit()
-#=======================================================================================================================================
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def searchArtiste(self,keywords):
         # Searches for artists that match one or more keywords provided by the user.
         # Retrieves artists that have any of the keywords in their name or in the title of a song they have performed.
@@ -368,8 +366,164 @@ class User(People):
         # Selecting an artist will return the id, title, and duration of all songs they have performed.
             
         # :param keywords: user inputted string
-        pass
-#====================================================================================================================================
+         # Stores songs
+        Search_A = {}
+        # Stores Playlist
+        x = keywords.split(" ")
+        for k in x:
+            placeholder = f"""
+            SELECT aid , name , nationality FROM artists
+            WHERE name LIKE "%{k}%"
+            COLLATE NOCASE
+            UNION
+            SELECT DISTINCT a.aid , a.name  ,a.nationality from 
+            songs s , artists a , perform p
+            WHERE p.aid = a.aid 
+            AND s.sid = p.sid 
+            AND s.title LIKE "%{k}%"
+            COLLATE NOCASE;
+            """ 
+            self.cursor.execute(placeholder)
+            songs_artiste = self.cursor.fetchall()
+        
+
+            # Checks for how many times a song occurs
+            for i in songs_artiste:
+                if i[0] not in Search_A:
+                    # Creates Class to store song in dictionary
+                    self.cursor.execute("""SELECT COUNT(p.sid)
+                    FROM artists a , songs s , perform p 
+                    WHERE p.aid = a.aid 
+                    AND s.sid = p.sid
+                    AND p.aid = ?
+                    GROUP BY a.aid ;""" , (i[0],))
+
+                    value = self.cursor.fetchone()[0]
+                    if(value == None):
+                        artist_seached = SearchedArtist(i[1] , i[2], 1,0)
+                    else:
+                        artist_seached = SearchedArtist(i[1] , i[2], 1,value)
+                    Search_A[i[0]] = artist_seached
+
+                else:
+                    # Adds one to the number of matches in the Track_Song_Playlist class
+                    Search_A[i[0]].match += 1
+
+        Ordered_list = self.Create_new_table_Artiste(Search_A)
+
+        if(len(Search_A) > 5):
+            self.displayfiveArtists(Ordered_list)
+        elif(len(Search_A) < 5 and len(Search_A) != 0):
+            self.displayallArtists(Ordered_list)
+        else:
+            print("No Artiste Found")
+            return None
+        self.selectArtists(Ordered_list)
+
+    def Create_new_table_Artiste(self , artiste):
+        # Create table to store songs and playlists
+        self.cursor.execute("""
+                                CREATE TABLE IF NOT EXISTS Art_or(
+                                    id CHAR,
+                                    name CHAR,
+                                    nationality CHAR , 
+                                    Match INT ,
+                                    noSongs INT ,
+                                    PRIMARY KEY(id)
+                                )
+                            """)
+            
+        # Insert songs into the new table
+        for s in artiste:
+            self.cursor.execute(""" 
+                                    INSERT INTO Art_or VALUES (?,?,?,?,?)
+                                """, (s, artiste[s].name, artiste[s].nationality , artiste[s].match , artiste[s].noSongs ))
+            
+
+        # Order the table based on number of matches
+        self.cursor.execute("""SELECT name , nationality , noSongs, id
+                                FROM Art_or
+                                ORDER BY Match
+                                DESC ;   
+                                """)
+            
+        songs_playlist_combine = self.cursor.fetchall()
+        # Deletes table after search
+
+        self.cursor.execute("""
+                                DROP TABLE Art_or ;
+        """)
+
+        return songs_playlist_combine
+
+    #----------------------------------------------------------------------------------------------------------------------------------------
+    def displayfiveArtists(self,SPlist):
+        #prints top five songs and playlists
+         # id ,title, duration, type
+        indx = 1
+        for sp in SPlist:
+            if indx <= 5:
+                print(str(indx) + ") " + "name: "+ sp[0] + " | nationality:", sp[1], "| SongsPerformed:", sp[2])
+                indx += 1
+            else:
+                break
+    #----------------------------------------------------------------------------------------------------------------------------------------
+    def displayallArtists(self,SPlist):
+        indx = 1
+        for sp in SPlist:
+            print(str(indx) + ") " + "name: "+ sp[0] + " | nationality:", sp[1], "| SongsPerformed:", sp[2])
+            indx += 1
+
+    def selectArtists(self, SPList):
+        """
+        Based on user selection do appropriate action.
+        """
+        choice = ""
+        while choice != "q":
+
+            #options
+            print("\n\tSELECTION MENU")
+            print("Select an Artist (An Artiste)")
+            print("Input 's' to Display All Results")
+            print("Input 'q' to Exit Selection Menu")
+            choice = input("Select: ")
+
+            artistSongs = None
+            if choice.isdigit():
+                c = int(choice) - 1
+                if c < len(SPList):
+                    item = SPList[c]
+                    self.cursor.execute("""
+                                        SELECT s.sid, s.title, s.duration
+                                        FROM songs s, perform p
+                                        WHERE s.sid = p.sid
+                                        AND p.aid = ?;
+                                        """, (SPList[0][3],))
+                    artistSongs = self.cursor.fetchall()
+                    indx = 1
+
+                    for a in artistSongs:
+                        print(str(indx) + " " +"Song ID: " + str(a[0]) + " Title: " + a[1] + " Duration: " + str(a[2]))
+                        indx += 1
+                    user_choice = input("Enter Option")
+                    if user_choice.isdigit():
+                        if( int(user_choice) > len(artistSongs)):
+                            print("Invalid Option")
+                        else:
+                            print(artistSongs[int(user_choice) - 1])
+                            self.songSelected(artistSongs[int(user_choice) - 1])
+                else:
+                    print("Invalid option! Try again")
+            elif choice.lower() == "q":
+                print("\nQuitting selection menu...")
+                break
+            elif choice.lower() == "s":
+                self.displayall(artistSongs)
+            else:
+                print("Invalid option! Try again.")
+                continue
+    
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def searchSPlaylist(self,keywords):
         #Searches for songs and playlists that match one or more keywords provided by the user.
         #Retrieves all songs and playlists that have any of the keywords in their title. Ordered by number of matching keywords (highest at the top).
@@ -409,7 +563,10 @@ class User(People):
                 else:
                     # Adds one to the number of matches in the Track_Song_Playlist class
                     Search_P[k[0]].no_of_matches += 1
-
+        
+        if (bool(Search_P) == False and bool(Search_S) == False):
+            print("No results found")
+            return None
 
         sortedPSlist = self.Create_new_table_p_s_duration(Search_S,Search_P)
 
@@ -419,14 +576,13 @@ class User(People):
             self.displayfive(sortedPSlist)
         
         self.selection(sortedPSlist)
-
-#-------------------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def total_duration(self, id):
         #total duration of playlist
         self.cursor.execute("SELECT SUM(s.duration) FROM songs s, playlists p , plinclude l WHERE p.pid = ? AND p.pid = l.pid AND l.sid = s.sid ;", (id,))
         t_duration = self.cursor.fetchone()
         return t_duration[0]            
-#--------------------------------------------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------------------------------------------------------------
     # Returns tuple of ordered matches of songs and playlists
     def Create_new_table_p_s_duration(self , songs , playlist):
         # Create table to store songs and playlists
@@ -479,15 +635,13 @@ class User(People):
                 indx += 1
             else:
                 break
-
-    #------------------------------------------------------------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def displayall(self,SPlist):
         indx = 1
         for sp in SPlist:
             print(str(indx) + ") " + "Type: "+ sp[3] + " | ID:", sp[0], "| Title:", sp[1], "| Duration:", sp[2])
             indx += 1
-    # #-------------------------------------------------------------------------------------------------------------------------------
-
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def selection(self, SPList):
         """
         Based on user selection do appropriate action.
@@ -522,7 +676,7 @@ class User(People):
             else:
                 print("Invalid option! Try again.")
                 continue
-    #-----------------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def songSelected(self, song):
         # song actions: 
         # (1) listen to it: listening event is recorded within the current session of the user (if a session has already started for the user) or within a new session (if not)
@@ -552,7 +706,7 @@ class User(People):
             else:
                 print("Invalid option! Try again.")
                 continue
-    #-----------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def listenToSong(self, song):
         title = song[1]
         songID = song[0]
@@ -578,8 +732,7 @@ class User(People):
         # self.cursor.execute("SELECT * FROM listen WHERE sno = ?", (self.session_no,))
         # result = self.cursor.fetchall()
         # print(result)
-
-    #-----------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def moreInfo(self,song):
         # song (id, title, duration, type)
         #songs(sid, title, duration)
@@ -599,7 +752,7 @@ class User(People):
         for playlist in songIncluded:
             print("*",playlist[0], playlist[1])
         print()
-    #-----------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def addToPlaylist(self,song):
         print("\nWhat type of playlist would you like to add to?\n1) Add to an EXISTING playlist\n2) Create and add to a NEW playlist\n3) Exit this menu")
         plChoice = input("Select an option: ")
@@ -621,10 +774,8 @@ class User(People):
                 # inserts the song into the selected playlist
                 self.cursor.execute("INSERT INTO plinclude VALUES (?,?,?);", (pidAdd, song[0], maxSOrder + 1,))
                 
-                # verifies that the playlist has been updated
-                # self.cursor.execute("SELECT * FROM plinclude WHERE pid = ?;", (pidAdd,))
-                # result = self.cursor.fetchall()
-                # print(result)
+            print("\nInserted", song[1], "into Playlist", plInfo[0], "|", plInfo[1])
+
         elif(plChoice == "2"):
             # gets playlist name from user
             plName = input("Input the name for your NEW playlist: ")
@@ -640,15 +791,13 @@ class User(People):
             # inserts the selected song into the new playlist, sets sorder to 1
             self.cursor.execute("INSERT INTO plinclude VALUES (?,?,?);", (pidNew, song[0], 1,))
 
-            # verifies that the song has been added to the new playlist
-            # self.cursor.execute("SELECT * FROM plinclude WHERE pid = ?;", (pidNew,))
-            # result = self.cursor.fetchall()
-            # print(result)
+            print("\nInserted", song[1], "into Playlist", pidNew, "|", plName)
+
         elif(plChoice == "3"):
             print("\nExiting Song Options")
         else:
             print("\nInvalid option, select a option from 1-3")
-    #-----------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------------------------------------------------------------
     def playlistSelected(self, playlist):
         # query to return all songs in playlist.
         # using fetchall create a list of them
@@ -664,10 +813,10 @@ class User(People):
             tohold.append((song.id,song.title,song.duration, song.type))
         self.displayall(tohold)
         self.selection(tohold)
-#=============================================================================================================================================  
+    #----------------------------------------------------------------------------------------------------------------------------------------  
     def Options(self):
         """
-        Presents the menu options for a USER. 
+        Presents the menu options for a USER.
         Calls the appropriate function according to the menu choice.
         """
         while(True):
@@ -689,7 +838,8 @@ class User(People):
                 keyword = input("Enter Search Terms: ")
                 self.searchSPlaylist(keyword)
             elif menuChoice == "3":
-                self.searchArtiste()
+                keyword = input("Enter Search Terms: ")
+                self.searchArtiste(keyword)
             elif menuChoice == "4":
                 self.endSession()
             elif menuChoice == "5":
@@ -699,7 +849,7 @@ class User(People):
                 break
             else:
                 print("Invalid option, please input a number between x and x")
-
+#========================================================================================================================================
 class Track_Song_Playlist:
     def __init__(self, id , title , duration, no_of_matches ,type):
         self.id = id
@@ -708,14 +858,23 @@ class Track_Song_Playlist:
         self.no_of_matches = no_of_matches
         self.type = type
         self.session_no = None
-#================================================================================================================
+#========================================================================================================================================
 
+class SearchedArtist:
+    def __init__(self, name , nationality , match, noSongs):
+        self.name = name
+        self.nationality = nationality
+        self.match = match
+        self.noSongs = noSongs
+#=========================================
 def main():
-    conn = sqlite3.connect('proj.db')
+
+    db_name = sys.argv[1]
+    conn = sqlite3.connect(db_name)
 
     c = conn.cursor()
-    execFile('prj-tables.sql',c)
-    execFile('test-data.sql',c )
+    # execFile('prj-tables.sql',c)
+    # execFile('test-data.sql',c )
     
     while(True):
         person = loginScreen(c , conn)
@@ -726,7 +885,6 @@ def main():
 
     conn.commit()
     conn.close()
-
 
 if __name__ ==  '__main__':
     main()
